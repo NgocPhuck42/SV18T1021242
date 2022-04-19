@@ -1,4 +1,4 @@
-﻿
+﻿@model SV18T1021242.Web.Models.EmployeePaginationResult
 @{
     ViewBag.Title = "Nhân viên";
 }
@@ -8,11 +8,11 @@
 
     </div>
     <div class="box-body">
-        <form action="#" method="get">
+        <form action="~/employee" method="get">
             <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Nhập tên nhân viên cấp cần tìm....">
+                <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên nhân viên cấp cần tìm...." autofocus value="@Model.SearchValue">
                 <span class="input-group-btn">
-                    <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-info">
+                    <button type="submit" id="search-btn" class="btn btn-flat btn-info">
                         <i class="fa fa-search"></i>
                     </button>
 
@@ -26,15 +26,14 @@
             </div>
         </form>
         <p style="margin-top:10px">
-            Có <b>1,505</b> nhân viên trong tổng số <strong>100</strong> trang
+            Có <b>@Model.RowCount</b> nhân viên trong tổng số <strong>@Model.PageCount</strong> trang
         </p>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr class="bg-blue-gradient">
                         <th>AVATA</th>
-                        <th>Họ Nhân Viên</th>
-                        <th>Tên Nhân Viên</th>
+                        <th>Họ và Tên</th>
                         <th>Ngày Sinh</th>
                         <th>Email</th>
                         <th>Ghi chú</th>
@@ -42,18 +41,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < 10; i++)
+                    @foreach (var item in Model.Data)
                     {
+                        string formatDate = @item.BirthDate.ToString("yyyy-MM-dd");
                         <tr>
-                            <td><img src="~/Themes/dist/img/mua.jpg" style="width:60px; height:60px"/></td>
-                            <td>Trương Đặng Ngọc</td>
-                            <td>Phúc</td>
-                            <td>23/04/2000</td>
-                            <td>tdnphuck42@gmai.com</td>
-                            <td>Là 1 developer</td>            
+                            <td><img src="@item.Photo" style="width:60px; height:60px" /></td>
+                            <td>@item.FullName</td>
+                            <td>@formatDate</td>
+                            <td>@item.Email</td>
+                            <td>@item.Notes</td>
                             <td>
-                                <a href="~/employee/edit/123" class="btn btn-info"><i class="fa fa-edit"></i></a>
-                                <a href="~/employee/delete/123" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="~/employee/edit/@item.EmployeeID" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                <a href="~/employee/delete/@item.EmployeeID" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
 
@@ -66,11 +65,17 @@
     <div class="box-footer">
         <div class="text-center">
             <ul class="pagination">
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    if (i == Model.Page)
+                    {
+                        <li class="active"><a href="~/employee">@i</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/employee?page=@i&searchValue=@Model.SearchValue">@i</a></li>
+                    }
+                }
             </ul>
         </div>
     </div>
