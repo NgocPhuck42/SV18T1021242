@@ -138,7 +138,7 @@ namespace SV18T1021242.BusinessLayer
         /// <returns></returns>
         public static bool DeleteSupplier(int supplierID)
         {
-            if (supplierDB.InProduct(supplierID))
+            if (supplierDB.InSupplier(supplierID))
                 return false;
             return supplierDB.Delete(supplierID);
         }
@@ -153,7 +153,7 @@ namespace SV18T1021242.BusinessLayer
         }
         public static bool InSupplier(int supplierID)
         {
-            return supplierDB.InProduct(supplierID);
+            return supplierDB.InSupplier(supplierID);
         }
         #endregion
         #region Shippers

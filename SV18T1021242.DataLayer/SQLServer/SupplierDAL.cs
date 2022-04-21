@@ -152,7 +152,7 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// </summary>
         /// <param name="supplierID"></param>
         /// <returns></returns>
-        public bool InProduct(int supplierID)
+        public bool InSupplier(int supplierID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
