@@ -36,14 +36,14 @@
                         <th>Họ và Tên</th>
                         <th>Ngày Sinh</th>
                         <th>Email</th>
-                        <th>Ghi chú</th>
+                        <th width="400px">Ghi chú</th>
                         <th style="width: 110px"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Data)
                     {
-                        string formatDate = @item.BirthDate.ToString("yyyy-MM-dd");
+                        string formatDate = item.BirthDate.ToString("yyyy-MM-dd");
                         <tr>
                             <td><img src="@item.Photo" style="width:60px; height:60px" /></td>
                             <td>@item.FullName</td>

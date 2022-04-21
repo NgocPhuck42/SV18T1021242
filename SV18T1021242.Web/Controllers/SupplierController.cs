@@ -1,4 +1,5 @@
 ﻿using SV18T1021242.BusinessLayer;
+using SV18T1021242.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,12 @@ namespace SV18T1021242.Web.Controllers
         }
         public ActionResult Create()
         {
+            Supplier model = new Supplier()
+            {
+                SupplierID = 0
+            };
             ViewBag.Title = "Bổ sung nhà cung cấp";
-            return View();
+            return View(model);
         }
         /// <summary>
         /// 
@@ -45,18 +50,63 @@ namespace SV18T1021242.Web.Controllers
         [Route("edit/{supplierID}")]
         public ActionResult Edit(int supplierID)
         {
+            Supplier model = CommonDataService.GetSupplier(supplierID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
             ViewBag.Title = "Cập nhật nhà cung cấp";
-            return View("Create");
+            return View("Create", model);
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="customerID"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Save(Supplier model)
+        {
+            if (string.IsNullOrWhiteSpace(model.SupplierName))
+                ModelState.AddModelError("SupplierName", "Tên không được để trống");
+            if (string.IsNullOrWhiteSpace(model.ContactName))
+                ModelState.AddModelError("ContactName", "Tên giao dịch không được để trống");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Title = "Nhà cung cấp";
+                return View("Create", model);
+            }
+
+            if (model.SupplierID == 0)
+            {
+                CommonDataService.AddSupplier(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                CommonDataService.UpdateSupplier(model);
+                return RedirectToAction("Index");
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="supplierID"></param>
         /// <returns></returns>
         [Route("delete/{supplierID}")]
         public ActionResult Delete(int supplierID)
         {
-            return View();
+            if (Request.HttpMethod == "POST")
+            {
+                CommonDataService.DeleteSupplier(supplierID);
+                return RedirectToAction("Index");
+            }
+            var model = CommonDataService.GetSupplier(supplierID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using SV18T1021242.BusinessLayer;
+using SV18T1021242.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +57,13 @@ namespace SV18T1021242.Web.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult Create()
-        {
+        {     
+            Customer model = new Customer()
+            {
+                CustomerID = 0
+            };
             ViewBag.Title = "Bổ sung khách hàng";
-            return View();
+            return View(model);
         }
         /// <summary>
         /// 
@@ -68,8 +73,43 @@ namespace SV18T1021242.Web.Controllers
         [Route("edit/{customerID}")]
         public ActionResult Edit(int customerID)
         {
+            Customer model = CommonDataService.GetCustomer(customerID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
             ViewBag.Title = "Cập nhật khách hàng";
-            return View("Create");
+            return View("Create", model);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Save(Customer model)
+        {
+            if (string.IsNullOrWhiteSpace(model.CustomerName))
+                ModelState.AddModelError("CustomerName", "Tên không được để trống");
+            if (string.IsNullOrWhiteSpace(model.ContactName))
+                ModelState.AddModelError("ContactName", "Tên giao dịch không được để trống");
+
+            if(!ModelState.IsValid)
+            {
+                ViewBag.Title = "Khách Hàng";
+                return View("Create", model);
+            }
+
+            if (model.CustomerID == 0)
+            {
+                CommonDataService.AddCustomer(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                CommonDataService.UpdateCustomer(model);
+                return RedirectToAction("Index");
+            }
         }
         /// <summary>
         /// 
@@ -79,7 +119,17 @@ namespace SV18T1021242.Web.Controllers
         [Route("delete/{customerID}")]
         public ActionResult Delete(int customerID)
         {
-            return View();
+            if (Request.HttpMethod== "POST")
+            {
+                CommonDataService.DeleteCustomer(customerID);
+                return RedirectToAction("Index");
+            }
+            var model = CommonDataService.GetCustomer(customerID);
+            if(model == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
     }
 }

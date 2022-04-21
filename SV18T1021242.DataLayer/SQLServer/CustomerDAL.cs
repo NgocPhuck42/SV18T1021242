@@ -30,7 +30,31 @@ namespace SV18T1021242.DataLayer.SQLServer
        
         public int Add(Customer data)
         {
-            throw new NotImplementedException();
+            int result = 0;
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"insert into Customers(CustomerName, ContactName, Address, City, PostalCode, Country)
+                                    values(@CustomerName, @ContactName, @Address, @City, @PostalCode, @Country) 
+                                    select scope_identity()
+                                ";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@CustomerName", data.CustomerName);
+                cmd.Parameters.AddWithValue("@ContactName", data.ContactName);
+                cmd.Parameters.AddWithValue("@Address", data.Address);
+                cmd.Parameters.AddWithValue("@City", data.City);
+                cmd.Parameters.AddWithValue("@PostalCode", data.PostalCode);
+                cmd.Parameters.AddWithValue("@Country", data.Country);
+
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -68,7 +92,20 @@ namespace SV18T1021242.DataLayer.SQLServer
 
         public bool Delete(int customerID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"Delete  from Customers where CustomerID = @customerID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@customerID", customerID);
+
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
         /// <summary>
         /// 
@@ -77,7 +114,33 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// <returns></returns>
         public Customer Get(int customerID)
         {
-            throw new NotImplementedException();
+            Customer result = null;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"select * from Customers where CustomerID = @customerID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@customerID", customerID);
+                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                if (dbReader.Read())
+                {
+                    result = new Customer()
+                    {
+                        CustomerID = Convert.ToInt32(dbReader["CustomerID"]),
+                        CustomerName = Convert.ToString(dbReader["CustomerName"]),
+                        ContactName = Convert.ToString(dbReader["ContactName"]),
+                        Address = Convert.ToString(dbReader["Address"]),
+                        City = Convert.ToString(dbReader["City"]),
+                        PostalCode = Convert.ToString(dbReader["PostalCode"]),
+                        Country = Convert.ToString(dbReader["Country"])
+                    };
+                }
+
+                cn.Close();
+            }
+            return result;
         }
         /// <summary>
         /// 
@@ -86,7 +149,20 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// <returns></returns>
         public bool InUsed(int customerID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"select case when exists(select * from Orders where CustomerID = @customerID) then 1 else 0 end";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@customerID", customerID);
+                result = Convert.ToBoolean(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+            return result;
         }
         /// <summary>
         /// 
@@ -143,7 +219,31 @@ namespace SV18T1021242.DataLayer.SQLServer
         }
         public bool Update(Customer data)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"update Customers set
+                                    CustomerName = @customerName, ContactName = @contactName, Address = @Address, 
+                                    City = @City, PostalCode = @PostalCode, Country = @Country where CustomerID = @CustomerID";
+                cmd.CommandType = CommandType.Text;
+
+                cmd.Connection = cn;
+                
+
+                cmd.Parameters.AddWithValue("@CustomerName", data.CustomerName);
+                cmd.Parameters.AddWithValue("@ContactName", data.ContactName);
+                cmd.Parameters.AddWithValue("@Address", data.Address);
+                cmd.Parameters.AddWithValue("@City", data.City);
+                cmd.Parameters.AddWithValue("@PostalCode", data.PostalCode);
+                cmd.Parameters.AddWithValue("@Country", data.Country);
+
+                cmd.Parameters.AddWithValue("@CustomerID", data.CustomerID);
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
     }
 }

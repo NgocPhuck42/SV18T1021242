@@ -13,7 +13,7 @@ namespace SV18T1021242.DataLayer
     public interface IShipperDAL
     {
         /// <summary>
-        /// Tìm kiếm và lấy danh sách nhà cung cấp dưới dạng phân trang
+        /// Tìm kiếm và lấy danh sách shipper cấp dưới dạng phân trang
         /// </summary>
         /// <param name="page">Trang cần xem</param>
         /// <param name="pageSize">Số dòng hiển thị trên mỗi trang</param>
@@ -22,33 +22,33 @@ namespace SV18T1021242.DataLayer
         IList<Shipper> List(int page, int pageSize, string searchValue);
 
         /// <summary>
-        /// Lấy thông tin 1 nhà cung cấp dựa vào mã nhà cung cấp
+        /// Lấy thông tin 1 shipper dựa vào mã nhà cung cấp
         /// </summary>
-        /// <param name="customerID">Mã loại hàng cần lấy</param>
+        /// <param name="shipperID">Mã loại shipper cần lấy</param>
         /// <returns></returns>
         Shipper Get(int shipperID);
         /// <summary>
-        /// Bổ sung 1 nhà cung cấp mới. Hàm trả về mã
+        /// Bổ sung 1 shipper mới. Hàm trả về mã
         /// nhà cung cấp được bổ sung.
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         int Add(Shipper data);
         /// <summary>
-        /// Cập nhật thông tin của một nhà cung cấp
+        /// Cập nhật thông tin của một shipper
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         bool Update(Shipper data);
         /// <summary>
-        /// Xóa một nhà cung cấp dựa vào mã nhà cung cấp
-        /// Lưu ý: không xóa nếu nhà cung cấp đã được sử dụng.
+        /// Xóa một shipper dựa vào mã nhà cung cấp
+        /// Lưu ý: không xóa nếu shipper đã được sử dụng.
         /// </summary>
         /// <param name="supplierID"></param>
         /// <returns></returns>
         bool Delete(int shipperID);
         /// <summary>
-        /// Đếm số nhà cung cấp tìm được
+        /// Đếm số shipper tìm được
         /// </summary>
         /// <param name="searchValue">Tên hoặc địa chỉ cần tìm</param>
         /// <returns></returns>

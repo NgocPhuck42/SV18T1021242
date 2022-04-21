@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SV18T1021242.DomainModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Employee
     {
         /// <summary>
