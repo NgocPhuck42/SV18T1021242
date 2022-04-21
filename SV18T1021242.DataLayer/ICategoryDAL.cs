@@ -50,6 +50,13 @@ namespace SV18T1021242.DataLayer
         /// <param name="searchValue">Tên hoặc địa chỉ cần tìm</param>
         /// <returns></returns>
         int Count(string searchValue);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        bool InCategory(int categoryID);
+        IList<Category> ListOfDescription();
 
     }
 }

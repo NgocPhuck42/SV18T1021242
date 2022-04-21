@@ -58,6 +58,6 @@ namespace SV18T1021242.DataLayer
         /// </summary>
         /// <param name="supplierID"></param>
         /// <returns></returns>
-        bool InUsed(int shipperID);
+        bool InShipper(int shipperID);
     }
 }

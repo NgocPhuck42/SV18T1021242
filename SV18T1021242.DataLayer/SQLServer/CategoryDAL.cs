@@ -30,7 +30,28 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// <returns></returns>
         public int Add(Category data)
         {
-            throw new NotImplementedException();
+            int result = 0;
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"insert into Categories(CategoryName, Description)
+                                    values(@CategoryName, @Description) 
+                                    select scope_identity()
+                                ";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@CategoryName", data.CategoryName);
+                cmd.Parameters.AddWithValue("@Description", data.Description);
+
+
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+
+            return result;
         }
 
         public int Count(string searchValue)
@@ -67,7 +88,20 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// <returns></returns>
         public bool Delete(int categoryID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"Delete  from Categories where CategoryID = @categoryID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@categoryID", categoryID);
+
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
         /// <summary>
         /// 
@@ -76,8 +110,50 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// <returns></returns>
         public Category Get(int categoryID)
         {
-            throw new NotImplementedException();
+            Category result = null;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"select * from Categories where CategoryID = @categoryID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@categoryID", categoryID);
+                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                if (dbReader.Read())
+                {
+                    result = new Category()
+                    {
+                        CategoryID = Convert.ToInt32(dbReader["CategoryID"]),
+                        CategoryName = Convert.ToString(dbReader["CategoryName"]),
+                        Description = Convert.ToString(dbReader["Description"]),
+
+                    };
+                }
+
+                cn.Close();
+            }
+            return result;
         }
+
+        public bool InCategory(int categoryID)
+        {
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"select case when exists(select * from Products where CategoryID = @categoryID) then 1 else 0 end";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@categoryID", categoryID);
+                result = Convert.ToBoolean(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+            return result;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -124,6 +200,32 @@ namespace SV18T1021242.DataLayer.SQLServer
 
             return data;
         }
+
+        public IList<Category> ListOfDescription()
+        {
+            List<Category> data = new List<Category>();
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = @"SELECT Description from Categories ";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (result.Read())
+                {
+                    data.Add(new Category()
+                    {
+                        Description = Convert.ToString(result["Description"]),
+
+                    });
+                }
+                cn.Close();
+            }
+            return data;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -131,7 +233,27 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// <returns></returns>
         public bool Update(Category data)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"update Categories set
+                                    CategoryName = @CategoryName, Description = @Description where CategoryID = @CategoryID";
+                cmd.CommandType = CommandType.Text;
+
+                cmd.Connection = cn;
+
+
+                cmd.Parameters.AddWithValue("@CategoryName", data.CategoryName);
+                cmd.Parameters.AddWithValue("@Description", data.Description);
+
+
+                cmd.Parameters.AddWithValue("@CategoryID", data.CategoryID);
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
     }
 }

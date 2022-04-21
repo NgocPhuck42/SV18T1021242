@@ -1,4 +1,4 @@
-﻿
+﻿@model SV18T1021242.DomainModel.Category
 @{
     
 }
@@ -8,28 +8,45 @@
 
     </div>
     <div class="box-body">
-        <form class="form-horizontal" action="#">
+        <form class="form-horizontal" action="~/category/save" method="post">
+            <input type="hidden" name="CategoryID" value="@Model.CategoryID" />
+
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên Loại Hàng</label>
                 <div class="col-sm-10">
-                    <input type="text"
-                           class="form-control"
-                           id="CategoryName"
-                           name="CategoryName"
-                           autofocus>
+                    @Html.TextBoxFor(c => c.CategoryName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(c => c.CategoryName)
 
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Miêu Tả</label>
-                <div class="col-sm-10">
-                    <select class="form-control"
-                            id="Description"
-                            name="Description">
-                        <option>Coca</option>
-                        <option>Bò húc</option>
-                        <option>Sting</option>
-                    </select>
+                <div class="col-sm-10">   
+                        @Html.TextBoxFor(c => c.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(c => c.Description)
+   
+                    @*<select class="form-control"
+                id="Description"
+                name="Description">
+            @foreach (var item in SV18T1021242.BusinessLayer.CommonDataService.ListOfDescriptions())
+            {
+                if (item.Description == Model.Description)
+                {
+                    <option value="@item.Description" selected>@item.Description</option>
+                }
+                else
+                {
+                    <option value="@item.Description">@item.Description</option>
+                }
+
+            }
+
+        </select>*@
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-sm-10 text-danger">
+                    @Html.ValidationSummary()
                 </div>
             </div>
             <div class="form-group">

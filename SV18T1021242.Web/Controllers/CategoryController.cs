@@ -1,4 +1,5 @@
 ﻿using SV18T1021242.BusinessLayer;
+using SV18T1021242.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +42,12 @@ namespace SV18T1021242.Web.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
-            ViewBag.Title = "Bổ sung loại hàng";
-            return View();
+            Category model = new Category()
+            {
+                CategoryID = 0
+            };
+                ViewBag.Title = "Bổ sung loại hàng";
+            return View(model);
         }
         /// <summary>
         /// 
@@ -52,8 +57,43 @@ namespace SV18T1021242.Web.Controllers
         [Route("edit/{categoryID}")]
         public ActionResult Edit(int categoryID)
         {
+            Category model = CommonDataService.GetCategory(categoryID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
             ViewBag.Title = "Cập nhật loại hàng";
-            return View("Create");
+            return View("Create", model);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Save(Category model)
+        {
+            if (string.IsNullOrWhiteSpace(model.CategoryName))
+                ModelState.AddModelError("ShipperName", "Tên không được để trống");
+            if (string.IsNullOrWhiteSpace(model.Description))
+                ModelState.AddModelError("Phone", "Miêu tả loại hàng không được để trống");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Title = "Loại hàng";
+                return View("Create", model);
+            }
+
+            if (model.CategoryID == 0)
+            {
+                CommonDataService.AddCategory(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                CommonDataService.UpdateCategory(model);
+                return RedirectToAction("Index");
+            }
         }
         /// <summary>
         /// 
@@ -63,7 +103,17 @@ namespace SV18T1021242.Web.Controllers
         [Route("delete/{categoryID}")]
         public ActionResult Delete(int categoryID)
         {
-            return View();
+            if (Request.HttpMethod == "POST")
+            {
+                CommonDataService.DeleteCategory(categoryID);
+                return RedirectToAction("Index");
+            }
+            var model = CommonDataService.GetCategory(categoryID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
     }
 }

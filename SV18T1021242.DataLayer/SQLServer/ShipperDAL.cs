@@ -22,9 +22,35 @@ namespace SV18T1021242.DataLayer.SQLServer
         {
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public int Add(Shipper data)
         {
-            throw new NotImplementedException();
+            int result = 0;
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"insert into Shippers(ShipperName, Phone)
+                                    values(@ShipperName, @Phone) 
+                                    select scope_identity()
+                                ";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@ShipperName", data.ShipperName);
+                cmd.Parameters.AddWithValue("@Phone", data.Phone);
+
+
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+
+            return result;
         }
 
         public int Count(string searchValue)
@@ -56,17 +82,66 @@ namespace SV18T1021242.DataLayer.SQLServer
 
         public bool Delete(int shipperID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"Delete  from Shippers where ShipperID = @shipperID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@shipperID", shipperID);
+
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
 
         public Shipper Get(int shipperID)
         {
-            throw new NotImplementedException();
+            Shipper result = null;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"select * from Shippers where ShipperID = @shipperID";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@shipperID", shipperID);
+                var dbReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                if (dbReader.Read())
+                {
+                    result = new Shipper()
+                    {
+                        ShipperID = Convert.ToInt32(dbReader["ShipperID"]),
+                        ShipperName = Convert.ToString(dbReader["ShipperName"]),
+                        Phone = Convert.ToString(dbReader["Phone"]),
+                        
+                    };
+                }
+
+                cn.Close();
+            }
+            return result;
         }
 
-        public bool InUsed(int shipperID)
+        public bool InShipper(int shipperID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"select case when exists(select * from Orders where ShipperID = @shipperID) then 1 else 0 end";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                cmd.Parameters.AddWithValue("@shipperID", shipperID);
+                result = Convert.ToBoolean(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+            return result;
         }
 
         public IList<Shipper> List(int page, int pageSize, string searchValue)
@@ -114,7 +189,27 @@ namespace SV18T1021242.DataLayer.SQLServer
 
         public bool Update(Shipper data)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"update Shippers set
+                                    ShipperName = @ShipperName, Phone = @Phone where ShipperID = @ShipperID";
+                cmd.CommandType = CommandType.Text;
+
+                cmd.Connection = cn;
+
+
+                cmd.Parameters.AddWithValue("@ShipperName", data.ShipperName);
+                cmd.Parameters.AddWithValue("@Phone", data.Phone);
+
+
+                cmd.Parameters.AddWithValue("@ShipperID", data.ShipperID);
+                result = cmd.ExecuteNonQuery() > 0;
+
+                cn.Close();
+            }
+            return result;
         }
     }
 }

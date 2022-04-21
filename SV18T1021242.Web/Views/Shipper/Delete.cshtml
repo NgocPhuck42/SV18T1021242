@@ -1,4 +1,4 @@
-﻿
+﻿@model SV18T1021242.DomainModel.Shipper
 @{
     ViewBag.Title = "Xóa Người Giao Hàng";
 }
@@ -8,23 +8,29 @@
 
     </div>
     <div class="box-body">
-        <form class="form-horizontal" action="#">
+        <form class="form-horizontal" action="~/shipper/delete/@Model.ShipperID" method="post">
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên Người Giao Hàng</label>
                 <div class="col-sm-10">
-                    <p class="form-control-static">Trương Đặng Ngọc Phúc</p>
+                    <p class="form-control-static">@Model.ShipperName</p>
 
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Số điện thoại</label>
                 <div class="col-sm-10">
-                    <p class="form-control-static">(+84)836323309</p>
+                    <p class="form-control-static">@Model.Phone</p>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash" style="margin-right:5px"></i>Đồng ý xóa</button>
+                    @if(SV18T1021242.BusinessLayer.CommonDataService.InShipper(Model.ShipperID)){
+                    <p class="text-warning">Không được xóa người giao hàng này</p>
+
+                    }else{
+                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash" style="margin-right:5px"></i>Đồng ý xóa</button>
+                    }
+
                     <a href="~/shipper" class="btn btn-default"><i class="fa fa-chevron-left" style="margin-right:5px"></i>Quay lại</a>
                 </div>
             </div>

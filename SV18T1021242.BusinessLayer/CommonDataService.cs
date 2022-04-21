@@ -47,6 +47,7 @@ namespace SV18T1021242.BusinessLayer
                 categoryDB = new DataLayer.FakeDB.CategoryDAL();
             }
         }
+        #region Categories
         /// <summary>
         /// Lấy danh sách các mặt hàng
         /// </summary>
@@ -56,6 +57,48 @@ namespace SV18T1021242.BusinessLayer
             rowCount = categoryDB.Count(searchValue);
             return categoryDB.List(page, pageSize, searchValue).ToList();
         }
+        public static List<Category> ListOfDescriptions()
+        {
+            return categoryDB.ListOfDescription().ToList();
+        }
+        public static int AddCategory(Category data)
+        {
+            return categoryDB.Add(data);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool UpdateCategory(Category data)
+        {
+            return categoryDB.Update(data);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public static bool DeleteCategory(int categoryID)
+        {
+            if (categoryDB.InCategory(categoryID))
+                return false;
+            return categoryDB.Delete(categoryID);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public static Category GetCategory(int categoryID)
+        {
+            return categoryDB.Get(categoryID);
+        }
+        public static bool InCategory(int categoryID)
+        {
+            return categoryDB.InCategory(categoryID);
+        }
+        #endregion
         #region Suppliers
         /// <summary>
         /// 
@@ -95,7 +138,8 @@ namespace SV18T1021242.BusinessLayer
         /// <returns></returns>
         public static bool DeleteSupplier(int supplierID)
         {
-
+            if (supplierDB.InProduct(supplierID))
+                return false;
             return supplierDB.Delete(supplierID);
         }
         /// <summary>
@@ -112,6 +156,7 @@ namespace SV18T1021242.BusinessLayer
             return supplierDB.InProduct(supplierID);
         }
         #endregion
+        #region Shippers
         /// <summary>
         /// 
         /// </summary>
@@ -125,6 +170,49 @@ namespace SV18T1021242.BusinessLayer
             rowCount = shipperDB.Count(searchValue);
             return shipperDB.List(page, pageSize, searchValue).ToList();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static int AddShipper(Shipper data)
+        {
+            return shipperDB.Add(data);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool UpdateShipper(Shipper data)
+        {
+            return shipperDB.Update(data);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public static bool DeleteShipper(int shipperID)
+        {
+            if (shipperDB.InShipper(shipperID))
+                return false;
+            return shipperDB.Delete(shipperID);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public static Shipper GetShipper(int shipperID)
+        {
+            return shipperDB.Get(shipperID);
+        }
+        public static bool InShipper(int shipperID)
+        {
+            return shipperDB.InShipper(shipperID);
+        }
+        #endregion
         /// <summary>
         /// 
         /// </summary>

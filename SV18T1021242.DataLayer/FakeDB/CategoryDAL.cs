@@ -46,6 +46,12 @@ namespace SV18T1021242.DataLayer.FakeDB
         {
             throw new NotImplementedException();
         }
+
+        public bool InCategory(int categoryID)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,6 +80,11 @@ namespace SV18T1021242.DataLayer.FakeDB
             throw new NotImplementedException();
         }
 
+        public IList<Category> ListOfDescription()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -83,5 +94,6 @@ namespace SV18T1021242.DataLayer.FakeDB
         {
             throw new NotImplementedException();
         }
+
     }
 }
