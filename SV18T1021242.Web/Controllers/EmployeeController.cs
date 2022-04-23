@@ -1,4 +1,6 @@
-﻿using SV18T1021242.BusinessLayer;
+﻿using Microsoft.Ajax.Utilities;
+using SV18T1021242.BusinessLayer;
+using SV18T1021242.DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +43,12 @@ namespace SV18T1021242.Web.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
+            Employee model = new Employee(){
+                EmployeeID = 0
+            };
+
             ViewBag.Title = "Bổ sung Nhân Viên";
-            return View();
+            return View(model);
         }
         /// <summary>
         /// 
@@ -52,8 +58,43 @@ namespace SV18T1021242.Web.Controllers
         [Route("edit/{employeeID}")]
         public ActionResult Edit(int employeeID)
         {
+            Employee model = CommonDataService.GetEmployee(employeeID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
             ViewBag.Title = "Cập nhật Nhân Viên";
-            return View("Create");
+            return View("Create", model);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Save(Employee model)
+        {
+            if (string.IsNullOrWhiteSpace(model.LastName))
+                ModelState.AddModelError("LastName", "Họ không được để trống");
+            if (string.IsNullOrWhiteSpace(model.FirstName))
+                ModelState.AddModelError("FirstName", "Tên không được để trống");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Title = "Nhân Viên";
+                return View("Create", model);
+            }
+
+            if (model.EmployeeID == 0)
+            {
+                CommonDataService.AddEmployee(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                CommonDataService.UpdateEmployee(model);
+                return RedirectToAction("Index");
+            }
         }
         /// <summary>
         /// 
@@ -63,7 +104,17 @@ namespace SV18T1021242.Web.Controllers
         [Route("delete/{employeeID}")]
         public ActionResult Delete(int employeeID)
         {
-            return View();
+            if (Request.HttpMethod == "POST")
+            {
+                CommonDataService.DeleteEmployee(employeeID);
+                return RedirectToAction("Index");
+            }
+            var model = CommonDataService.GetEmployee(employeeID);
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
     }
 }

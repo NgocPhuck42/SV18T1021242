@@ -55,6 +55,6 @@ namespace SV18T1021242.DataLayer
         /// </summary>
         /// <param name="employeeID"></param>
         /// <returns></returns>
-        bool InUsed(int employeeID);
+        bool InEmployee(int employeeID);
     }
 }

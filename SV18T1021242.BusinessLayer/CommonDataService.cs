@@ -213,6 +213,7 @@ namespace SV18T1021242.BusinessLayer
             return shipperDB.InShipper(shipperID);
         }
         #endregion
+        #region Employee
         /// <summary>
         /// 
         /// </summary>
@@ -229,12 +230,46 @@ namespace SV18T1021242.BusinessLayer
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public static List<Country> ListOfCountries()
+        public static int AddEmployee(Employee data)
         {
-            return countryDB.List().ToList();
+            return employeeDB.Add(data);
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool UpdateEmployee(Employee data)
+        {
+            return employeeDB.Update(data);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customerID"></param>
+        /// <returns></returns>
+        public static bool DeleteEmployee(int employeeID)
+        {
+            if (employeeDB.InEmployee(employeeID))
+                return false;
+            return employeeDB.Delete(employeeID);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="employeeID"></param>
+        /// <returns></returns>
+        public static Employee GetEmployee(int employeeID)
+        {
+            return employeeDB.Get(employeeID);
+        }
+        public static bool InEmployee(int employeeID)
+        {
+            return employeeDB.InEmployee(employeeID);
+        }
+        #endregion
         #region Customer
         /// <summary>
         /// Lấy danh sách khách hàng dưới dạng phân trang
@@ -297,5 +332,16 @@ namespace SV18T1021242.BusinessLayer
             return customerDB.InUsed(customerID);
         }
         #endregion
+        #region Countries
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static List<Country> ListOfCountries()
+        {
+            return countryDB.List().ToList();
+        }
+        #endregion
+
     }
 }
