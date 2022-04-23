@@ -12,7 +12,7 @@ namespace SV18T1021242.DataLayer.SQLServer
     /// <summary>
     /// 
     /// </summary>
-    public class CategoryDAL : _BaseDAL, ICategoryDAL
+    public class CategoryDAL : _BaseDAL, ICommonDAL<Category>
     {
         /// <summary>
         /// 
@@ -136,7 +136,7 @@ namespace SV18T1021242.DataLayer.SQLServer
             return result;
         }
 
-        public bool InCategory(int categoryID)
+        public bool InUsed(int categoryID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
@@ -178,7 +178,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                                      OR(Description LIKE @searchValue)
                                 )
                     ) AS t
-                    WHERE t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
+                    WHERE (@PageSize=0) or t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
                 cmd.Parameters.AddWithValue("@page", page);
@@ -201,30 +201,30 @@ namespace SV18T1021242.DataLayer.SQLServer
             return data;
         }
 
-        public IList<Category> ListOfDescription()
-        {
-            List<Category> data = new List<Category>();
+        //public IList<Category> ListOfDescription()
+        //{
+        //    List<Category> data = new List<Category>();
 
-            using (SqlConnection cn = OpenConnection())
-            {
-                SqlCommand cmd = new SqlCommand();
+        //    using (SqlConnection cn = OpenConnection())
+        //    {
+        //        SqlCommand cmd = new SqlCommand();
 
-                cmd.CommandText = @"SELECT Description from Categories ";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = cn;
-                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (result.Read())
-                {
-                    data.Add(new Category()
-                    {
-                        Description = Convert.ToString(result["Description"]),
+        //        cmd.CommandText = @"SELECT Description from Categories ";
+        //        cmd.CommandType = CommandType.Text;
+        //        cmd.Connection = cn;
+        //        var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (result.Read())
+        //        {
+        //            data.Add(new Category()
+        //            {
+        //                Description = Convert.ToString(result["Description"]),
 
-                    });
-                }
-                cn.Close();
-            }
-            return data;
-        }
+        //            });
+        //        }
+        //        cn.Close();
+        //    }
+        //    return data;
+        //}
 
         /// <summary>
         /// 

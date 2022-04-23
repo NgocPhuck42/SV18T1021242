@@ -12,7 +12,7 @@ namespace SV18T1021242.DataLayer.SQLServer
     /// <summary>
     /// 
     /// </summary>
-    public class ShipperDAL : _BaseDAL, IShipperDAL 
+    public class ShipperDAL : _BaseDAL, ICommonDAL<Shipper> 
     {
         /// <summary>
         /// 
@@ -126,7 +126,7 @@ namespace SV18T1021242.DataLayer.SQLServer
             return result;
         }
 
-        public bool InShipper(int shipperID)
+        public bool InUsed(int shipperID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
@@ -164,7 +164,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                                  OR (Phone LIKE @searchValue)
                                 )
                     ) AS t
-                    WHERE t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
+                    WHERE (@PageSize=0) or t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
                 cmd.Parameters.AddWithValue("@page", page);

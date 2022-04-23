@@ -12,7 +12,7 @@ namespace SV18T1021242.DataLayer.SQLServer
     /// <summary>
     /// 
     /// </summary>
-    public class EmployeeDAL : _BaseDAL ,IEmployeeDAL
+    public class EmployeeDAL : _BaseDAL , ICommonDAL<Employee>
     {
         /// <summary>
         /// 
@@ -128,7 +128,7 @@ namespace SV18T1021242.DataLayer.SQLServer
             return result;
         }
 
-        public bool InEmployee(int employeeID)
+        public bool InUsed(int employeeID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
@@ -167,7 +167,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                                  OR (Email LIKE @searchValue)
                                 )
                     ) AS t
-                    WHERE t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
+                    WHERE (@PageSize=0) or t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
                 cmd.Parameters.AddWithValue("@page", page);

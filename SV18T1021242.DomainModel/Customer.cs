@@ -36,5 +36,6 @@ namespace SV18T1021242.DomainModel
         /// 
         /// </summary>
         public string Country{get; set; }
+
     }
 }

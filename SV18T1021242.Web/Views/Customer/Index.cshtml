@@ -44,19 +44,19 @@
                 <tbody>
                     @foreach(var item in Model.Data)
                     {
-                        <tr>
-                            <td>@item.CustomerName</td>
-                            <td>@item.ContactName</td>
-                            <td>@item.Address</td>
-                            <td>@item.Country</td>
-                            <td>@item.City</td>
-                            <td>@item.PostalCode</td>
-                            <td>
+                    <tr>
+                        <td>@item.CustomerName</td>
+                        <td>@item.ContactName</td>
+                        <td>@item.Address</td>
+                        <td>@item.Country</td>
+                        <td>@item.City</td>
+                        <td>@item.PostalCode</td>
+                        <td>
 
-                                <a href="~/customer/edit/@item.CustomerID" class="btn btn-info"><i class="fa fa-edit"></i></a>
-                                <a href="~/customer/delete/@item.CustomerID" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
+                            <a href="~/customer/edit/@item.CustomerID" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                            <a href="~/customer/delete/@item.CustomerID" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
 
                     }
 

@@ -12,7 +12,7 @@ namespace SV18T1021242.DataLayer.SQLServer
     /// <summary>
     /// 
     /// </summary>
-    public class CustomerDAL : _BaseDAL, ICustomerDAL
+    public class CustomerDAL : _BaseDAL, ICommonDAL<Customer>
     {
         /// <summary>
         /// 
@@ -48,7 +48,6 @@ namespace SV18T1021242.DataLayer.SQLServer
                 cmd.Parameters.AddWithValue("@City", data.City);
                 cmd.Parameters.AddWithValue("@PostalCode", data.PostalCode);
                 cmd.Parameters.AddWithValue("@Country", data.Country);
-
                 result = Convert.ToInt32(cmd.ExecuteScalar());
 
                 cn.Close();
@@ -134,7 +133,8 @@ namespace SV18T1021242.DataLayer.SQLServer
                         Address = Convert.ToString(dbReader["Address"]),
                         City = Convert.ToString(dbReader["City"]),
                         PostalCode = Convert.ToString(dbReader["PostalCode"]),
-                        Country = Convert.ToString(dbReader["Country"])
+                        Country = Convert.ToString(dbReader["Country"]),
+
                     };
                 }
 
@@ -192,7 +192,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                                  OR (Address LIKE @searchValue)
                                 )
                     ) AS t
-                    WHERE t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
+                    WHERE (@PageSize=0) or t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
                 cmd.Parameters.AddWithValue("@page", page);
@@ -209,7 +209,9 @@ namespace SV18T1021242.DataLayer.SQLServer
                         Address = Convert.ToString(result["Address"]),
                         City = Convert.ToString(result["City"]),
                         PostalCode = Convert.ToString(result["PostalCode"]),
-                        Country = Convert.ToString(result["Country"])
+                        Country = Convert.ToString(result["Country"]),
+
+
                     });
                 }
                 cn.Close();
@@ -225,7 +227,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"update Customers set
                                     CustomerName = @customerName, ContactName = @contactName, Address = @Address, 
-                                    City = @City, PostalCode = @PostalCode, Country = @Country where CustomerID = @CustomerID";
+                                    City = @City, PostalCode = @PostalCode, Country = @Country  where CustomerID = @CustomerID";
                 cmd.CommandType = CommandType.Text;
 
                 cmd.Connection = cn;

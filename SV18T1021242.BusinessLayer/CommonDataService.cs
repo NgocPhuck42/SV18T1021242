@@ -15,11 +15,11 @@ namespace SV18T1021242.BusinessLayer
     /// </summary>
     public static class CommonDataService
     {
-        private static readonly ICategoryDAL categoryDB;
-        private static readonly ICustomerDAL customerDB;
-        private static readonly ISupplierDAL supplierDB;
-        private static readonly IShipperDAL shipperDB;
-        private static readonly IEmployeeDAL employeeDB;
+        private static readonly ICommonDAL<Category> categoryDB;
+        private static readonly ICommonDAL<Customer> customerDB;
+        private static readonly ICommonDAL<Supplier> supplierDB;
+        private static readonly ICommonDAL<Shipper> shipperDB;
+        private static readonly ICommonDAL<Employee> employeeDB;
         private static readonly ICountryDAL countryDB;
 
 
@@ -42,10 +42,10 @@ namespace SV18T1021242.BusinessLayer
                 countryDB = new DataLayer.SQLServer.CountryDAL(connectionString);
 
             }
-            else
-            {
-                categoryDB = new DataLayer.FakeDB.CategoryDAL();
-            }
+            //else
+            //{
+            //    categoryDB = new DataLayer.FakeDB.CategoryDAL();
+            //}
         }
         #region Categories
         /// <summary>
@@ -57,10 +57,10 @@ namespace SV18T1021242.BusinessLayer
             rowCount = categoryDB.Count(searchValue);
             return categoryDB.List(page, pageSize, searchValue).ToList();
         }
-        public static List<Category> ListOfDescriptions()
-        {
-            return categoryDB.ListOfDescription().ToList();
-        }
+        //public static List<Category> ListOfDescriptions()
+        //{
+        //    return categoryDB.ListOfDescription().ToList();
+        //}
         public static int AddCategory(Category data)
         {
             return categoryDB.Add(data);
@@ -81,7 +81,7 @@ namespace SV18T1021242.BusinessLayer
         /// <returns></returns>
         public static bool DeleteCategory(int categoryID)
         {
-            if (categoryDB.InCategory(categoryID))
+            if (categoryDB.InUsed(categoryID))
                 return false;
             return categoryDB.Delete(categoryID);
         }
@@ -96,7 +96,7 @@ namespace SV18T1021242.BusinessLayer
         }
         public static bool InCategory(int categoryID)
         {
-            return categoryDB.InCategory(categoryID);
+            return categoryDB.InUsed(categoryID);
         }
         #endregion
         #region Suppliers
@@ -138,7 +138,7 @@ namespace SV18T1021242.BusinessLayer
         /// <returns></returns>
         public static bool DeleteSupplier(int supplierID)
         {
-            if (supplierDB.InSupplier(supplierID))
+            if (supplierDB.InUsed(supplierID))
                 return false;
             return supplierDB.Delete(supplierID);
         }
@@ -153,7 +153,7 @@ namespace SV18T1021242.BusinessLayer
         }
         public static bool InSupplier(int supplierID)
         {
-            return supplierDB.InSupplier(supplierID);
+            return supplierDB.InUsed(supplierID);
         }
         #endregion
         #region Shippers
@@ -195,7 +195,7 @@ namespace SV18T1021242.BusinessLayer
         /// <returns></returns>
         public static bool DeleteShipper(int shipperID)
         {
-            if (shipperDB.InShipper(shipperID))
+            if (shipperDB.InUsed(shipperID))
                 return false;
             return shipperDB.Delete(shipperID);
         }
@@ -210,7 +210,7 @@ namespace SV18T1021242.BusinessLayer
         }
         public static bool InShipper(int shipperID)
         {
-            return shipperDB.InShipper(shipperID);
+            return shipperDB.InUsed(shipperID);
         }
         #endregion
         #region Employee
@@ -252,7 +252,7 @@ namespace SV18T1021242.BusinessLayer
         /// <returns></returns>
         public static bool DeleteEmployee(int employeeID)
         {
-            if (employeeDB.InEmployee(employeeID))
+            if (employeeDB.InUsed(employeeID))
                 return false;
             return employeeDB.Delete(employeeID);
         }
@@ -267,7 +267,7 @@ namespace SV18T1021242.BusinessLayer
         }
         public static bool InEmployee(int employeeID)
         {
-            return employeeDB.InEmployee(employeeID);
+            return employeeDB.InUsed(employeeID);
         }
         #endregion
         #region Customer

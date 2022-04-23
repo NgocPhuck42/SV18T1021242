@@ -12,7 +12,7 @@ namespace SV18T1021242.DataLayer.SQLServer
     /// <summary>
     /// 
     /// </summary>
-    public class SupplierDAL : _BaseDAL, ISupplierDAL
+    public class SupplierDAL : _BaseDAL, ICommonDAL<Supplier>
     {
         /// <summary>
         /// 
@@ -152,7 +152,7 @@ namespace SV18T1021242.DataLayer.SQLServer
         /// </summary>
         /// <param name="supplierID"></param>
         /// <returns></returns>
-        public bool InSupplier(int supplierID)
+        public bool InUsed(int supplierID)
         {
             bool result = false;
             using (SqlConnection cn = OpenConnection())
@@ -197,7 +197,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                                  OR (Address LIKE @searchValue)
                                 )
                     ) AS t
-                    WHERE t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
+                    WHERE (@PageSize=0) or t.RowNumber BETWEEN (@page - 1) * @pageSize + 1 AND @page * @pageSize;";
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = cn;
                 cmd.Parameters.AddWithValue("@page", page);
