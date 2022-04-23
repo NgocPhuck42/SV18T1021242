@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SV18T1021242.DataLayer.SQLServer
 {
-    public class CountryDAL : _BaseDAL, ICountryDAL
+    public class CountryDAL : _BaseDAL, ICommonDAL<Country>
     {
         /// <summary>
         /// 
@@ -19,6 +19,54 @@ namespace SV18T1021242.DataLayer.SQLServer
         {
 
         }
+
+        public int Add(Country data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count(string searchValue)
+        {
+            int count = 0;
+            if (searchValue != "")
+                searchValue = "%" + searchValue + "%";
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = @"SELECT Count(*)
+                FROM    Countries
+                WHERE    (@searchValue = N'')
+                    OR    (
+                            (CountryName LIKE @searchValue)
+                       
+                        )";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@searchValue", searchValue);
+
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                cn.Close();
+            }
+
+            return count;
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Country Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool InUsed(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IList<Country> List()
         {
             List<Country> data = new List<Country>();
@@ -43,6 +91,16 @@ namespace SV18T1021242.DataLayer.SQLServer
             }
 
             return data;
+        }
+
+        public IList<Country> List(int page, int pageSize, string searchValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(Country data)
+        {
+            throw new NotImplementedException();
         }
     }
 }

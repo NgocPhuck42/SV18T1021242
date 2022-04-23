@@ -219,6 +219,41 @@ namespace SV18T1021242.DataLayer.SQLServer
 
             return data;
         }
+
+        public IList<Customer> List()
+        {
+            List<Customer> data = new List<Customer>();
+           
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = @"SELECT * From Customers";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+              
+                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (result.Read())
+                {
+                    data.Add(new Customer()
+                    {
+                        CustomerID = Convert.ToInt32(result["CustomerID"]),
+                        CustomerName = Convert.ToString(result["CustomerName"]),
+                        ContactName = Convert.ToString(result["ContactName"]),
+                        Address = Convert.ToString(result["Address"]),
+                        City = Convert.ToString(result["City"]),
+                        PostalCode = Convert.ToString(result["PostalCode"]),
+                        Country = Convert.ToString(result["Country"]),
+
+
+                    });
+                }
+                cn.Close();
+            }
+
+            return data;
+        }
+
         public bool Update(Customer data)
         {
             bool result = false;

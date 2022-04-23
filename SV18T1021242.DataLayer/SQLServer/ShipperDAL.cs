@@ -12,7 +12,7 @@ namespace SV18T1021242.DataLayer.SQLServer
     /// <summary>
     /// 
     /// </summary>
-    public class ShipperDAL : _BaseDAL, ICommonDAL<Shipper> 
+    public class ShipperDAL : _BaseDAL, ICommonDAL<Shipper>
     {
         /// <summary>
         /// 
@@ -179,6 +179,35 @@ namespace SV18T1021242.DataLayer.SQLServer
                         ShipperName = Convert.ToString(result["ShipperName"]),
                         Phone = Convert.ToString(result["Phone"]),
                         
+                    });
+                }
+                cn.Close();
+            }
+
+            return data;
+        }
+
+        public IList<Shipper> List()
+        {
+            List<Shipper> data = new List<Shipper>();
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = @"SELECT * from Shippers";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (result.Read())
+                {
+                    data.Add(new Shipper()
+                    {
+                        ShipperID = Convert.ToInt32(result["ShipperID"]),
+                        ShipperName = Convert.ToString(result["ShipperName"]),
+                        Phone = Convert.ToString(result["Phone"]),
+
                     });
                 }
                 cn.Close();

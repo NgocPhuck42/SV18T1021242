@@ -195,6 +195,40 @@ namespace SV18T1021242.DataLayer.SQLServer
             return data;
         }
 
+        public IList<Employee> List()
+        {
+            List<Employee> data = new List<Employee>();
+
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = @"SELECT * FROM Employees";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (result.Read())
+                {
+                    data.Add(new Employee()
+                    {
+
+                        EmployeeID = Convert.ToInt32(result["EmployeeID"]),
+                        LastName = Convert.ToString(result["LastName"]),
+                        FirstName = Convert.ToString(result["FirstName"]),
+                        BirthDate = Convert.ToDateTime(result["BirthDate"]),
+                        Photo = Convert.ToString(result["Photo"]),
+                        Notes = Convert.ToString(result["Notes"]),
+                        Email = Convert.ToString(result["Email"])
+                    });
+                }
+                cn.Close();
+            }
+
+            return data;
+        }
+
         public bool Update(Employee data)
         {
             bool result = false;

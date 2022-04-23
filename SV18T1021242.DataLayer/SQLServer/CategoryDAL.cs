@@ -201,6 +201,35 @@ namespace SV18T1021242.DataLayer.SQLServer
             return data;
         }
 
+        public IList<Category> List()
+        {
+            List<Category> data = new List<Category>();
+          
+            using (SqlConnection cn = OpenConnection())
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = @"SELECT * From Categories";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = cn;
+
+                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                while (result.Read())
+                {
+                    data.Add(new Category()
+                    {
+                        CategoryID = Convert.ToInt32(result["CategoryID"]),
+                        CategoryName = Convert.ToString(result["CategoryName"]),
+                        Description = Convert.ToString(result["Description"]),
+
+                    });
+                }
+                cn.Close();
+            }
+
+            return data;
+        }
+
         //public IList<Category> ListOfDescription()
         //{
         //    List<Category> data = new List<Category>();

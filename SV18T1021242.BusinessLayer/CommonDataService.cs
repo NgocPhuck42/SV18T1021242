@@ -20,7 +20,7 @@ namespace SV18T1021242.BusinessLayer
         private static readonly ICommonDAL<Supplier> supplierDB;
         private static readonly ICommonDAL<Shipper> shipperDB;
         private static readonly ICommonDAL<Employee> employeeDB;
-        private static readonly ICountryDAL countryDB;
+        private static readonly ICommonDAL<Country> countryDB;
 
 
         /// <summary>
@@ -340,6 +340,11 @@ namespace SV18T1021242.BusinessLayer
         public static List<Country> ListOfCountries()
         {
             return countryDB.List().ToList();
+        }
+        public static List<Country> ListOfCountries(int page, int pageSize, string searchValue, out int rowCount)
+        {
+            rowCount = categoryDB.Count(searchValue);
+            return countryDB.List( page,  pageSize,  searchValue).ToList();
         }
         #endregion
 

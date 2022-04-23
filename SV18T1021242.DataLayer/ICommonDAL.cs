@@ -13,7 +13,7 @@ namespace SV18T1021242.DataLayer
     public interface ICommonDAL<T> where T: class
     {
         IList<T> List(int page, int pageSize, string searchValue);
-
+        IList<T> List();
         T Get(int id);
         
         int Add(T data);
