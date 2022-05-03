@@ -1,0 +1,89 @@
+﻿@model SV18T1021242.DomainModel.Employee
+@{
+
+}
+
+<form class="form-horizontal" action="~/employee/save" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="EmployeeID" value="@Model.EmployeeID" />
+
+    <div class="container rounded bg-white mt-5 mb-5" style="padding:100px">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+
+                    <img style="border-radius:50%;width:150px;height:150px" class="rounded-circle mt-5" width="150px"
+                         src="@Model.Photo" id="Photo">
+
+                </div>
+                <div class="col-md-10">
+                    <input type="file" name="Photo" />
+                </div>
+            </div>
+            @ViewBag.FileStatus
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-5">
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Họ</label>
+                            @Html.TextBoxFor(c => c.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(c => c.LastName)
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Tên</label>
+                            @Html.TextBoxFor(c => c.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(c => c.FirstName)
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Ngày Sinh</label>
+                            @if (Model.EmployeeID == 0)
+                            {
+                                <input type="date" class="form-control" id="BirthDate" name="BirthDate" value="@Model.BirthDate.ToString("MM-dd-yyyy")">
+                            }
+                            else
+                            {
+                                <input type="text"
+                                       class="form-control"
+                                       id="BirthDate"
+                                       name="BirthDate"
+                                       value="@Model.BirthDate.ToString("MM-dd-yyyy")">
+                                <a style="color:red">*MM/dd/yyyy</a>
+                            }
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="labels">Email</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="Email"
+                                   name="Email"
+                                   value="@Model.Email">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Ghi Chú</label>
+                            <textarea name="Notes" id="Notes" rows="4" cols="50">@Model.Notes
+                        </textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-sm-10 text-danger">
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+                <div class="form-group" style="padding-top:30px">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save" style="margin-right:5px"></i>Bổ Sung</button>
+                        <a href="~/employee" class="btn btn-default"><i class="fa fa-chevron-left" style="margin-right:5px"></i>Quay lại</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+

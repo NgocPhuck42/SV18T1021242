@@ -74,13 +74,13 @@ namespace SV18T1021242.Web.Controllers
         public ActionResult Save(Category model)
         {
             if (string.IsNullOrWhiteSpace(model.CategoryName))
-                ModelState.AddModelError("ShipperName", "Tên không được để trống");
+                ModelState.AddModelError("CategoryName", "Tên không được để trống");
             if (string.IsNullOrWhiteSpace(model.Description))
-                ModelState.AddModelError("Phone", "Miêu tả loại hàng không được để trống");
+                ModelState.AddModelError("Description", "Miêu tả loại hàng không được để trống");
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Title = "Loại hàng";
+                ViewBag.Title = model.CategoryID == 0 ? "Bổ sung loại hàng" : "Cập nhật loại hàng";
                 return View("Create", model);
             }
 

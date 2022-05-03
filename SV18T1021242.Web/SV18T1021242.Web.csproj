@@ -5817,9 +5817,13 @@
     <Content Include="Views\Category\Create.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
     <Content Include="Views\Customer\Create - Copy.cshtml" />
+    <Content Include="Views\Employee\Create - Copy.cshtml" />
+    <Content Include="Views\Employee\Delete - Copy.cshtml" />
+    <Content Include="Views\Employee\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\Employees\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

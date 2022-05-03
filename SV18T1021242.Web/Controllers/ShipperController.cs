@@ -82,7 +82,7 @@ namespace SV18T1021242.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Title = "Người giao hàng";
+                ViewBag.Title = model.ShipperID == 0 ? "Bổ sung người giao hàng" : "Cập nhật người giao hàng";
                 return View("Create", model);
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SV18T1021242.DomainModel
 {
@@ -32,6 +33,10 @@ namespace SV18T1021242.DomainModel
         /// 
         /// </summary>
         public string Photo { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+   //     public HttpPostedFile PhotoFile { get; set; }
         /// <summary>
         /// 
         /// </summary>

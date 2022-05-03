@@ -29,8 +29,8 @@ namespace SV18T1021242.DataLayer.SQLServer
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = @"insert into Employees(LastName, FirstName, BirthDate, Notes, Email)
-                                    values(@LastName, @FirstName, @BirthDate , @Notes, @Email) 
+                cmd.CommandText = @"insert into Employees(LastName, FirstName, BirthDate, Notes, Email, Photo)
+                                    values(@LastName, @FirstName, @BirthDate , @Notes, @Email, @Photo) 
                                     select scope_identity()
                                 ";
                 cmd.CommandType = CommandType.Text;
@@ -39,7 +39,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                 cmd.Parameters.AddWithValue("@LastName", data.LastName);
                 cmd.Parameters.AddWithValue("@FirstName", data.FirstName);
                 cmd.Parameters.AddWithValue("@BirthDate", data.BirthDate);
-                //cmd.Parameters.AddWithValue("@Photo", data.Photo);
+                cmd.Parameters.AddWithValue("@Photo", data.Photo);
                 cmd.Parameters.AddWithValue("@Notes", data.Notes);
                 cmd.Parameters.AddWithValue("@Email", data.Email);
                 result = Convert.ToInt32(cmd.ExecuteScalar());
@@ -231,12 +231,14 @@ namespace SV18T1021242.DataLayer.SQLServer
 
         public bool Update(Employee data)
         {
+            if (data.BirthDate.Year < 1753)
+                return false;
             bool result = false;
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"update Employees set
-                                    LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate , Email = @Email, Notes = @Notes 
+                                    LastName = @LastName, FirstName = @FirstName, BirthDate = @BirthDate , Email = @Email, Notes = @Notes, Photo=@Photo
                                      where EmployeeID = @EmployeeID";
                 cmd.CommandType = CommandType.Text;
 
@@ -248,7 +250,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                 cmd.Parameters.AddWithValue("@BirthDate", data.BirthDate);
                 cmd.Parameters.AddWithValue("@Email", data.Email);
                 cmd.Parameters.AddWithValue("@Notes", data.Notes);
-        //        cmd.Parameters.AddWithValue("@Photo", data.Photo);
+                cmd.Parameters.AddWithValue("@Photo", data.Photo);
 
                 cmd.Parameters.AddWithValue("@EmployeeID", data.EmployeeID);
                 result = cmd.ExecuteNonQuery() > 0;

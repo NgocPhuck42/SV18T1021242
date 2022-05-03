@@ -70,10 +70,22 @@ namespace SV18T1021242.Web.Controllers
                 ModelState.AddModelError("SupplierName", "Tên không được để trống");
             if (string.IsNullOrWhiteSpace(model.ContactName))
                 ModelState.AddModelError("ContactName", "Tên giao dịch không được để trống");
+            if (string.IsNullOrWhiteSpace(model.ContactName))
+                ModelState.AddModelError("ContactName", "Tên giao dịch không được để trống");
+            if (string.IsNullOrWhiteSpace(model.Address))
+                ModelState.AddModelError("Address", "Địa chỉ không được để trống");
+            if (string.IsNullOrWhiteSpace(model.City))
+                ModelState.AddModelError("City", "Thành phố không được để trống");
+            if (string.IsNullOrWhiteSpace(model.PostalCode))
+                ModelState.AddModelError("PostalCode", "Mã bưu điện không được để trống");
+            if (string.IsNullOrWhiteSpace(model.Country))
+                ModelState.AddModelError("Country", "Quốc gia không được để trống");
+            if (string.IsNullOrWhiteSpace(model.Phone))
+                ModelState.AddModelError("Phone", "Quốc gia không được để trống");
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Title = "Nhà cung cấp";
+                ViewBag.Title = model.SupplierID == 0 ? "Bổ sung nhà cung cấp" : "Cập nhật nhà cung cấp";
                 return View("Create", model);
             }
 

@@ -14,45 +14,30 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên Nhà Cung Cấp</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(c => c.SupplierName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.SupplierName)
+                    <input type="text" class="form-control" name="SupplierName" autofocus value="@Model.SupplierName">
+                    @Html.ValidationMessageFor(e => e.SupplierName, "", new { @style = "color:#ff0000" });
 
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên Giao Dịch</label>
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(c => c.ContactName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(c => c.ContactName)
+                    <input type="text" class="form-control" name="ContactName" value="@Model.ContactName">
+                    @Html.ValidationMessageFor(e => e.ContactName, "", new { @style = "color:#ff0000" });
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Địa Chỉ</label>
                 <div class="col-sm-10">
-                    <input type="text"
-                           class="form-control"
-                           id="Address"
-                           name="Address" value="@Model.Address">
+                    <input type="text" class="form-control" name="Address" value="@Model.Address">
+                    @Html.ValidationMessageFor(e => e.Address, "", new { @style = "color:#ff0000" });
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Quốc gia</label>
                 <div class="col-sm-10">
-                    <select class="form-control"
-                            id="Country"
-                            name="Country">
-                        @foreach (var item in SV18T1021242.BusinessLayer.CommonDataService.ListOfCountries())
-                        {
-                            if (item.CountryName == Model.Country)
-                            {
-                                <option value="@item.CountryName" selected>@item.CountryName</option>
-                            }
-                            else
-                            {
-                                <option value="@item.CountryName">@item.CountryName</option>
-                            }
-                        }
-                    </select>
+                    @Html.DropDownListFor(c => c.Country, SelectListHelper.Countries(), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(c => c.Country, "", new { @style = "color:#ff0000" })
                 </div>
             </div>
             <div class="form-group">
@@ -62,6 +47,8 @@
                            class="form-control"
                            id="City"
                            name="City" value="@Model.City">
+                    @Html.ValidationMessageFor(e => e.City, "", new { @style = "color:#ff0000" });
+
                 </div>
             </div>
             <div class="form-group">
@@ -71,6 +58,8 @@
                            class="form-control"
                            id="PostalCode"
                            name="PostalCode" value="@Model.PostalCode">
+                    @Html.ValidationMessageFor(e => e.PostalCode, "", new { @style = "color:#ff0000" });
+
                 </div>
             </div>
             <div class="form-group">
@@ -80,13 +69,9 @@
                            class="form-control"
                            id="Phone"
                            name="Phone" value="@Model.Phone">
+                    @Html.ValidationMessageFor(e => e.Phone, "", new { @style = "color:#ff0000" });
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-offset-2 col-sm-10 text-danger">
-                    @Html.ValidationSummary()
-                </div>
-            </div>
+            </div>     
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save" style="margin-right:5px"></i>Lưu dữ liệu</button>

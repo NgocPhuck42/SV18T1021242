@@ -48,6 +48,8 @@ namespace SV18T1021242.DataLayer.SQLServer
                 cmd.Parameters.AddWithValue("@City", data.City);
                 cmd.Parameters.AddWithValue("@PostalCode", data.PostalCode);
                 cmd.Parameters.AddWithValue("@Country", data.Country);
+   
+
                 result = Convert.ToInt32(cmd.ExecuteScalar());
 
                 cn.Close();
