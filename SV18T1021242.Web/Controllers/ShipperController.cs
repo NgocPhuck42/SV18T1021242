@@ -22,21 +22,41 @@ namespace SV18T1021242.Web.Controllers
         // GET: Shipper
         public ActionResult Index(int page = 1, string searchValue = "")
         {
+            Models.PaginationSearchInput model = Session["SHIPPER_SEARCH"] as Models.PaginationSearchInput;
+            if (model == null)
             {
-                int pageSize = 10;
-                int rowCount = 0;
-
-                var data = CommonDataService.ListOfShippers(page, pageSize, searchValue, out rowCount);
-                Models.ShipperPaginationResult model = new Models.ShipperPaginationResult
+                model = new Models.PaginationSearchInput()
                 {
-                    Page = page,
-                    PageSize = pageSize,
-                    RowCount = rowCount,
-                    SearchValue = searchValue,
-                    Data = data
+                    Page = 1,
+                    PageSize = 10,
+                    SearchValue = ""
                 };
-                return View(model);
             }
+            return View(model);
+            
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public ActionResult Search(Models.PaginationSearchInput input)
+        {
+            int rowCount = 0;
+
+            var data = CommonDataService.ListOfShippers(input.Page, input.PageSize, input.SearchValue, out rowCount);
+            Models.ShipperPaginationResult model = new Models.ShipperPaginationResult
+            {
+                Page = input.Page,
+                PageSize = input.PageSize,
+                RowCount = rowCount,
+                SearchValue = input.SearchValue,
+                Data = data
+            };
+
+            Session["SHIPPER_SEARCH"] = input;
+
+            return View(model);
         }
         /// <summary>
         /// 

@@ -1,4 +1,4 @@
-﻿@model SV18T1021242.Web.Models.SupplierPaginationResult
+﻿@model SV18T1021242.Web.Models.PaginationSearchInput
 @{
     ViewBag.Title = "Nhà Cung Cấp";
 }
@@ -8,8 +8,10 @@
 
     </div>
     <div class="box-body">
-        <form action="~/supplier" method="get">
+        <form id="searchInput" action="~/supplier/search" >
+     
             <div class="input-group">
+                @Html.HiddenFor(c => c.PageSize)
                 <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên nhà cung cấp cần tìm...." autofocus value="@Model.SearchValue">
                 <span class="input-group-btn">
                     <button type="submit" id="search-btn" class="btn btn-flat btn-info">
@@ -25,64 +27,43 @@
                 </span>
             </div>
         </form>
-        <p style="margin-top:10px">
-            Có <b>@Model.RowCount</b> nhà cung cấp trong tổng số <strong>@Model.PageCount</strong> trang
-        </p>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                    <tr class="bg-blue-gradient">
-                        <th>Tên Nhà Cung Cấp</th>
-                        <th>Tên Giao Dịch</th>
-                        <th>Địa Chỉ</th>
-                        <th>Quốc Gia</th>
-                        <th>Thành Phố</th>
-                        <th>Mã Bưu Chính</th>
-                        <th>Số điện thoại</th>
-                        <th style="width: 110px"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Data)
-                    {
-                        <tr>
-                            <td>@item.SupplierName</td>
-                            <td>@item.ContactName</td>
-                            <td>@item.Address</td>
-                            <td>@item.Country</td>
-                            <td>@item.City</td>
-                            <td>@item.PostalCode</td>
-                            <td>@item.Phone</td>
-                            <td>
+        <div id="searchResult">
 
-                                <a href="~/supplier/edit/@item.SupplierID" class="btn btn-info"><i class="fa fa-edit"></i></a>
-                                <a href="~/supplier/delete/@item.SupplierID" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-
-                    }
-
-                </tbody>
-            </table>
         </div>
     </div>
-    <div class="box-footer">
-        <div class="text-center">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.PageCount; i++)
-                {
-                    if (i == Model.Page)
-                    {
-                        <li class="active"><a href="~/supplier">@i</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="~/supplier?page=@i&searchValue=@Model.SearchValue">@i</a></li>
-                    }
-                }
-            </ul>
-        </div>
-    </div>
+
 </div>
+@section scripts{
+    <script>
 
+        $(document).ready(function () {
+            doSearch(@Model.Page);
+            $("#searchInput").submit(function (e) {
+                e.preventDefault();
+                doSearch(1);
+                return false;
+            });
+        });
+        function doSearch(page) {
+            var url = $(" #searchInput").prop("action");
+            var input = $("#searchInput").serializeArray();
+            input.push({ "name": "page", "value": page });
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: input,
+                error: function () {
+                    alert("Your request is not valid");
+                },
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+        }
+
+
+    </script>
+
+}
 

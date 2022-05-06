@@ -17,20 +17,41 @@ namespace SV18T1021242.Web.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Supplier
-        public ActionResult Index(int page = 1, string searchValue = "")
+        public ActionResult Index()
         {
-            int pageSize = 10;
+            Models.PaginationSearchInput model = Session["SUPPLIER_SEARCH"] as Models.PaginationSearchInput;
+            if (model == null)
+            {
+                model = new Models.PaginationSearchInput()
+                {
+                    Page = 1,
+                    PageSize = 10,
+                    SearchValue = ""
+                };
+            }
+            return View(model);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public ActionResult Search(Models.PaginationSearchInput input)
+        {
             int rowCount = 0;
 
-            var data = CommonDataService.ListOfSuppliers(page, pageSize, searchValue, out rowCount);
+            var data = CommonDataService.ListOfSuppliers(input.Page, input.PageSize, input.SearchValue, out rowCount);
             Models.SupplierPaginationResult model = new Models.SupplierPaginationResult
             {
-                Page = page,
-                PageSize = pageSize,
+                Page = input.Page,
+                PageSize = input.PageSize,
                 RowCount = rowCount,
-                SearchValue = searchValue,
+                SearchValue = input.SearchValue,
                 Data = data
             };
+
+            Session["SUPPLIER_SEARCH"] = input;
+
             return View(model);
         }
         public ActionResult Create()

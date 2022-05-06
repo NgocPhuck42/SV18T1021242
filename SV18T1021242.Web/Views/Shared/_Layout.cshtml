@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="~/Themes/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="~/Themes/bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/Themes/bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="~/Themes/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Themes/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -58,35 +61,46 @@
 
         @{Html.RenderPartial("_Footer");}
     </div>
-  
-      <!-- ./wrapper -->
-  
-      <!-- jQuery 3 -->
-  
-      <script src="~/Themes/bower_components/jquery/dist/jquery.min.js"></script>
-  
-      <!-- Bootstrap 3.3.7 -->
-  
-      <script src="~/Themes/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  
-      <!-- SlimScroll -->
-  
-      <script src="~/Themes/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-  
-      <!-- FastClick -->
-  
-      <script src="~/Themes/bower_components/fastclick/lib/fastclick.js"></script>
-  
-      <!-- AdminLTE App -->
-  
-      <script src="~/Themes/dist/js/adminlte.min.js"></script>
-  
-      <!-- AdminLTE for demo purposes -->
-  
-      <script src="~/Themes/dist/js/demo.js"></script>
-  
-      <script>$(document).ready(function () {
-    $('.sidebar-menu').tree()
-    })</script>
+
+    <!-- ./wrapper -->
+    <!-- jQuery 3 -->
+
+    <script src="~/Themes/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap 3.3.7 -->
+
+    <script src="~/Themes/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Themes/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/Themes/bower_components/select2/dist/js/select2.full.js"></script>
+    <script src="~/Themes/bower_components/select2/dist/js/select2.js"></script>
+    <script src="~/Themes/bower_components/select2/dist/js/select2.min.js"></script>
+    <script src="~/Themes/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+
+    <!-- SlimScroll -->
+
+    <script src="~/Themes/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- FastClick -->
+
+    <script src="~/Themes/bower_components/fastclick/lib/fastclick.js"></script>
+
+    <!-- AdminLTE App -->
+
+    <script src="~/Themes/dist/js/adminlte.min.js"></script>
+
+    <!-- AdminLTE for demo purposes -->
+
+    <script src="~/Themes/dist/js/demo.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.sidebar-menu').tree();
+            $('.select2').select2();
+            $('.datepicker').datepicker({ format: "dd/mm/yyyy" });
+        })
+    </script>
+    @RenderSection("scripts", false)
 </body>
 </html>

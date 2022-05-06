@@ -3,5 +3,46 @@
     ViewBag.Title = "Mặt hàng";
 }
 
+<div class="box box-primary">
+    <div class="box-header with-border ">
+    </div>
+    <div class="box-body">
+        <form action="#" method="get">
+            <div class="row">
+                <div class="col-sm-3">
+                    <select class="form-control" name="category">
+                        <option>-- Loại hàng --</option>
+                        <option>Mỹ phẩm</option>
+                        <option>Thực phẩm</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control" name="category">
+                        <option>-- Nhà cung cấp --</option>
+                        <option>Công ty TNHH Thành Công</option>
+                        <option>Vina Foods</option>
+                    </select>
+                </div>
+                <div class="col-sm-6 input-group">
+                    <input type="text" name="searchValue"
+                           class="form-control"
+                           placeholder="Nhập tên mặt hàng cần tìm">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-info">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <a href="~/product/create"
+                           class="btn btn-flat btn-primary"
+                           style="margin-left:5px;">
+                            <i class="fa fa-plus"></i> Bổ sung
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <p style="margin:10px 0 10px 0">
+            Có <strong>1,210</strong> mặt hàng trong tổng số <strong>101</strong> trang
+        </p>
 
 

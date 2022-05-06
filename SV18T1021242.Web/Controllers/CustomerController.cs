@@ -21,43 +21,50 @@ namespace SV18T1021242.Web.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Customer
-        public ActionResult Index(int page = 1, string searchValue = "")
+        public ActionResult Index()
         {
-            int pageSize = 10;
+            Models.PaginationSearchInput model = Session["CUSTOMER_SEARCH"] as Models.PaginationSearchInput;
+            if (model == null)
+            {
+                model = new Models.PaginationSearchInput()
+                {
+                    Page = 1,
+                    PageSize = 10,
+                    SearchValue = ""
+                };
+            }
+            return View(model);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public ActionResult Search(Models.PaginationSearchInput input)
+        {
             int rowCount = 0;
 
-            var data = CommonDataService.ListOfCustomers(page, pageSize, searchValue, out rowCount);
+            var data = CommonDataService.ListOfCustomers(input.Page, input.PageSize, input.SearchValue, out rowCount);
             Models.CustomerPaginationResult model = new Models.CustomerPaginationResult
             {
-                Page = page,
-                PageSize = pageSize,
+                Page = input.Page,
+                PageSize = input.PageSize,
                 RowCount = rowCount,
-                SearchValue = searchValue,
+                SearchValue = input.SearchValue,
                 Data = data
             };
+
+            Session["CUSTOMER_SEARCH"] = input;
+
             return View(model);
-                //int pageSize = 10;
-                //int rowCount = 0;
-
-            //var model = BusinessLayer.CommonDataService.ListOfCustomers(page, pageSize, searchValue,out rowCount);
-
-            //// Tính số trang
-            //int pageCount = rowCount / pageSize;
-            //if (rowCount % pageSize > 0)
-            //    pageCount += 1;
-
-            //ViewBag.RowCount = rowCount;
-            //ViewBag.PageCount = pageCount;
-            //ViewBag.Page = page;
-            //ViewBag.SearchValue = searchValue;
-            //return View(model);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public ActionResult Create()
-        {     
+        {
             Customer model = new Customer()
             {
                 CustomerID = 0
@@ -101,10 +108,10 @@ namespace SV18T1021242.Web.Controllers
                 ModelState.AddModelError("PostalCode", "Mã bưu điện không được để trống");
             if (string.IsNullOrWhiteSpace(model.Country))
                 ModelState.AddModelError("Country", "Quốc gia không được để trống");
-          
+
             if (!ModelState.IsValid)
             {
-                ViewBag.Title = model.CustomerID==0 ?"Bổ sung khách hàng": "Cập nhật khách hàng";
+                ViewBag.Title = model.CustomerID == 0 ? "Bổ sung khách hàng" : "Cập nhật khách hàng";
                 return View("Create", model);
             }
 
@@ -127,13 +134,13 @@ namespace SV18T1021242.Web.Controllers
         [Route("delete/{customerID}")]
         public ActionResult Delete(int customerID)
         {
-            if (Request.HttpMethod== "POST")
+            if (Request.HttpMethod == "POST")
             {
                 CommonDataService.DeleteCustomer(customerID);
                 return RedirectToAction("Index");
             }
             var model = CommonDataService.GetCustomer(customerID);
-            if(model == null)
+            if (model == null)
             {
                 return RedirectToAction("Index");
             }
