@@ -1,4 +1,4 @@
-﻿
+﻿@model SV18T1021242.DomainModel.Product
 @{
     ViewBag.Title = "Bổ sung mặt hàng";
 }
@@ -8,38 +8,40 @@
     </div>
 
     <div class="box-body">
-        <form class="form-horizontal" action="#" method="post">
+        <form class="form-horizontal" action="~/product/save" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="CustomerID" value="@Model.ProductID" />
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên mặt hàng:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="ProductName" autofocus>
-                </div>
+                <input type="text" class="form-control" name="ProductName" autofocus value="@Model.ProductName">
+                @Html.ValidationMessageFor(e => e.ProductName, "", new { @style = "color:#ff0000" });
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Đơn vị tính:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="Unit" autofocus>
-                </div>
+                <input type="text" class="form-control" name="Unit" value="@Model.Unit">
+                @Html.ValidationMessageFor(e => e.Unit, "", new { @style = "color:#ff0000" });
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Giá hàng:</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="Price">
-                </div>
+                <input type="text" class="form-control" name="Price" value="@string.Format("{0:C}",Model.Price)" />
+
+                @Html.ValidationMessageFor(e => e.Price, "", new { @style = "color:#ff0000" }) ;
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Ảnh minh họa:</label>
                 <div class="col-sm-10">
-                    <input type="file" class="form-control" name="Photo" />
+                    <input type="file" class="form-control" name="uploadPhoto" accept="image/*"
+                           onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-sm-10">
-                    <img src="~/Images/Products/samsung_NP900X4C.png" class="img img-bordered" style="width:200px" />
+                    <input type="hidden" name="Photo" value="@Model.Photo" />
+                    <img id="Photo" src="~/@Model.Photo" class="img img-bordered" style="width:200px" />
+                    @Html.ValidationMessageFor(e => e.Photo, "", new { @style = "color:#ff0000" });
                 </div>
             </div>
 

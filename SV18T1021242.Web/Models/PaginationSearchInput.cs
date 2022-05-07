@@ -13,6 +13,6 @@ namespace SV18T1021242.Web.Models
         public int Page { get; set; }
         public int PageSize { get; set; }
         public string SearchValue { get; set; }
-
+        public int CategoryID { get; set; }
     }
 }

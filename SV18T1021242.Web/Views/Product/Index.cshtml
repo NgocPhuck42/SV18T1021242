@@ -1,4 +1,5 @@
-﻿
+﻿@model SV18T1021242.Web.Models.PaginationSearchInput
+
 @{
     ViewBag.Title = "Mặt hàng";
 }
@@ -7,26 +8,33 @@
     <div class="box-header with-border ">
     </div>
     <div class="box-body">
-        <form action="#" method="get">
+        <form id="searchInput" action="~/product/search">
+            @Html.HiddenFor(c => c.PageSize)
             <div class="row">
                 <div class="col-sm-3">
                     <select class="form-control" name="category">
-                        <option>-- Loại hàng --</option>
-                        <option>Mỹ phẩm</option>
-                        <option>Thực phẩm</option>
+                        @foreach (var i in SelectListHelper.Categories())
+                        {
+                            <option>@i.Text</option>
+                        }
                     </select>
                 </div>
+
+                @*<div class="col-sm-3">
+                        @Html.DropDownListFor(c => c.CategoryID, SelectListHelper.Categories(), new { @class = "form-control select2" })
+                    </div>*@
                 <div class="col-sm-3">
                     <select class="form-control" name="category">
-                        <option>-- Nhà cung cấp --</option>
-                        <option>Công ty TNHH Thành Công</option>
-                        <option>Vina Foods</option>
+                        @foreach (var i in SelectListHelper.Suppliers())
+                        {
+                            <option>@i.Text</option>
+                        }
                     </select>
                 </div>
                 <div class="col-sm-6 input-group">
                     <input type="text" name="searchValue"
                            class="form-control"
-                           placeholder="Nhập tên mặt hàng cần tìm">
+                           placeholder="Nhập tên mặt hàng cần tìm" value="@Model.SearchValue">
                     <span class="input-group-btn">
                         <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-info">
                             <i class="fa fa-search"></i>
@@ -39,10 +47,42 @@
                     </span>
                 </div>
             </div>
+            <div id="searchResult">
+
+            </div>
         </form>
+    </div>
+</div>
+@section scripts{
+    <script>
 
-        <p style="margin:10px 0 10px 0">
-            Có <strong>1,210</strong> mặt hàng trong tổng số <strong>101</strong> trang
-        </p>
+        $(document).ready(function () {
+            doSearch(@Model.Page);
+            $("#searchInput").submit(function (e) {
+                e.preventDefault();
+                doSearch(1);
+                return false;
+            });
+        });
+        function doSearch(page) {
+            var url = $(" #searchInput").prop("action");
+            var input = $("#searchInput").serializeArray();
+            input.push({ "name": "page", "value": page });
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: input,
+                error: function () {
+                    alert("Your request is not valid");
+                },
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+        }
 
 
+    </script>
+
+}
