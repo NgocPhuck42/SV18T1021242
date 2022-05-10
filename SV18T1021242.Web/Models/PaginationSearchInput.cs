@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SV18T1021242.DomainModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,5 +15,6 @@ namespace SV18T1021242.Web.Models
         public int PageSize { get; set; }
         public string SearchValue { get; set; }
         public int CategoryID { get; set; }
+        public int SupplierID { get; set; }
     }
 }

@@ -21,7 +21,6 @@ namespace SV18T1021242.BusinessLayer
         private static readonly ICommonDAL<Shipper> shipperDB;
         private static readonly ICommonDAL<Employee> employeeDB;
         private static readonly ICommonDAL<Country> countryDB;
-        private static readonly ICommonDAL<Product> productDB;
 
 
 
@@ -42,7 +41,6 @@ namespace SV18T1021242.BusinessLayer
                 shipperDB = new DataLayer.SQLServer.ShipperDAL(connectionString);
                 employeeDB = new DataLayer.SQLServer.EmployeeDAL(connectionString);
                 countryDB = new DataLayer.SQLServer.CountryDAL(connectionString);
-                productDB = new DataLayer.SQLServer.ProductDAL(connectionString);
 
             }
             //else
@@ -356,68 +354,6 @@ namespace SV18T1021242.BusinessLayer
         {
             rowCount = categoryDB.Count(searchValue);
             return countryDB.List( page,  pageSize,  searchValue).ToList();
-        }
-        #endregion
-        #region Products
-        /// <summary>
-        /// Lấy danh sách khách hàng dưới dạng phân trang
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="searchValue"></param>
-        /// <param name="rowCount"></param>
-        /// <returns></returns>
-        public static List<Product> ListOfProducts(int page, int pageSize, string searchValue, out int rowCount)
-        {
-            rowCount = productDB.Count(searchValue);
-            return productDB.List(page, pageSize, searchValue).ToList();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static int AddProduct(Product data)
-        {
-            return productDB.Add(data);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static bool UpdateProduct(Product data)
-        {
-            return productDB.Update(data);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productID"></param>
-        /// <returns></returns>
-        public static bool DeleteProduct(int productID)
-        {
-            if (productDB.InUsed(productID))
-                return false;
-            return productDB.Delete(productID);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productID"></param>
-        /// <returns></returns>
-        public static Product GetProduct(int productID)
-        {
-            return productDB.Get(productID);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productID"></param>
-        /// <returns></returns>
-        public static bool InUsedProduct(int productID)
-        {
-            return productDB.InUsed(productID);
         }
         #endregion
     }

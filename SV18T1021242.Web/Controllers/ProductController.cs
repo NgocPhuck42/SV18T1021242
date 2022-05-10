@@ -3,6 +3,7 @@ using SV18T1021242.BusinessLayer;
 using SV18T1021242.DomainModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,8 @@ using System.Web.Mvc;
 namespace SV18T1021242.Web.Controllers
 {
     [Authorize]
+    [RoutePrefix("product")]
+
     public class ProductController : Controller
     {
         // GET: Product
@@ -23,7 +26,9 @@ namespace SV18T1021242.Web.Controllers
                 {
                     Page = 1,
                     PageSize = 10,
-                    SearchValue = ""
+                    SearchValue = "",
+                    CategoryID = 0,
+                    SupplierID = 0
                 };
             }
             return View(model);
@@ -36,20 +41,39 @@ namespace SV18T1021242.Web.Controllers
         public ActionResult Search(Models.PaginationSearchInput input)
         {
             int rowCount = 0;
-
-            var data = CommonDataService.ListOfProducts(input.Page, input.PageSize, input.SearchValue, out rowCount);
+            var data = ProductDataService.ListOfProducts(input.Page, input.PageSize, input.SearchValue, input.CategoryID, input.SupplierID, out rowCount);
             Models.ProductPaginationResult model = new Models.ProductPaginationResult
             {
                 Page = input.Page,
                 PageSize = input.PageSize,
-                RowCount = rowCount,
                 SearchValue = input.SearchValue,
+                CategoryID = input.CategoryID,
+                SupplierID = input.SupplierID,
+                RowCount = rowCount,
                 Data = data
             };
 
             Session["PRODUCT_SEARCH"] = input;
 
             return View(model);
+            //try
+            //{
+            //    int rowCount = 0;
+            //    int pageSize = 10;
+            //    var model = ProductDataService.ListOfProducts(page, pageSize, searchValue, category, supplier, out rowCount);
+            //    ViewBag.RowCount = rowCount;
+            //    ViewBag.Page = page;
+
+            //    int pageCount = rowCount / pageSize;
+            //    if (rowCount % pageSize > 0)
+            //        pageCount++;
+            //    ViewBag.PageCount = pageCount;
+            //    return View(model);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Content(ex.Message);
+            //}
         }
         /// <summary>
         /// 
@@ -73,21 +97,21 @@ namespace SV18T1021242.Web.Controllers
         [Route("edit/{productID}")]
         public ActionResult Edit(int productID)
         {
-            int id = 0;
-            try
-            {
-                id = Convert.ToInt32(productID);
-            }
-            catch
-            {
-            }
-            Product model = CommonDataService.GetProduct(id);
-            if (model == null)
-            {
-                return RedirectToAction("Index");
-            }
-            ViewBag.Title = "Cập nhật Nhân Viên";
-            return View(model);
+            //int id = 0;
+            //try
+            //{
+            //    id = Convert.ToInt32(productID);
+            //}
+            //catch
+            //{
+            //}
+            //Product model = CommonDataService.GetProduct(id);
+            //if (model == null)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+            //ViewBag.Title = "Cập nhật Nhân Viên";
+            return View("Edit");
         }
         /// <summary>
         /// 
@@ -95,7 +119,7 @@ namespace SV18T1021242.Web.Controllers
         /// <param name="productID"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Save(Product model, HttpPostedFileBase uploadPhoto)
+        public ActionResult Save(Product model, HttpPostedFileBase uploadPhoto, string formatPrice)
         {
 
             if (string.IsNullOrWhiteSpace(model.ProductName))
@@ -103,7 +127,8 @@ namespace SV18T1021242.Web.Controllers
             if (string.IsNullOrWhiteSpace(model.Unit))
                 ModelState.AddModelError("Unit", "Unit không được để trống");
 
-           
+
+
             // Xử lí file ảnh
             if (uploadPhoto != null)
             {
@@ -141,18 +166,27 @@ namespace SV18T1021242.Web.Controllers
             if (model.ProductID == 0)
             {
 
-                CommonDataService.AddProduct(model);
-                return RedirectToAction("Index");
+
             }
             else
             {
-                CommonDataService.UpdateProduct(model);
-                return RedirectToAction("Index");
+
             }
+            return View();
         }
         [Route("delete/{productID}")]
         public ActionResult Delete(int productID)
         {
+
+            if (Request.HttpMethod == "POST")
+            {
+                
+            }
+            
+            //if (model == null)
+            //{
+            //    return RedirectToAction("Index");
+            //}
             return View();
         }
         /// <summary>

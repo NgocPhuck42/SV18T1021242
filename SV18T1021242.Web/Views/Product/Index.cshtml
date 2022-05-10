@@ -12,24 +12,12 @@
             @Html.HiddenFor(c => c.PageSize)
             <div class="row">
                 <div class="col-sm-3">
-                    <select class="form-control" name="category">
-                        @foreach (var i in SelectListHelper.Categories())
-                        {
-                            <option>@i.Text</option>
-                        }
-                    </select>
+                    @Html.DropDownListFor(c => c.CategoryID, SelectListHelper.Categories(), new { @class = "form-control select2"})
+
                 </div>
 
-                @*<div class="col-sm-3">
-                        @Html.DropDownListFor(c => c.CategoryID, SelectListHelper.Categories(), new { @class = "form-control select2" })
-                    </div>*@
                 <div class="col-sm-3">
-                    <select class="form-control" name="category">
-                        @foreach (var i in SelectListHelper.Suppliers())
-                        {
-                            <option>@i.Text</option>
-                        }
-                    </select>
+                    @Html.DropDownListFor(c => c.SupplierID, SelectListHelper.Suppliers(), new { @class = "form-control select2"})
                 </div>
                 <div class="col-sm-6 input-group">
                     <input type="text" name="searchValue"

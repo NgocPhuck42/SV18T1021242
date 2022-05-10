@@ -67,7 +67,7 @@ namespace SV18T1021242.DataLayer.SQLServer
             throw new NotImplementedException();
         }
 
-        public IList<Country> List()
+        public IList<Country> List(int page, int pageSize, string searchValue)
         {
             List<Country> data = new List<Country>();
            
@@ -93,7 +93,7 @@ namespace SV18T1021242.DataLayer.SQLServer
             return data;
         }
 
-        public IList<Country> List(int page, int pageSize, string searchValue)
+        public IList<Country> List()
         {
             throw new NotImplementedException();
         }

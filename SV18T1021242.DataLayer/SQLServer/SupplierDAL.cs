@@ -225,38 +225,38 @@ namespace SV18T1021242.DataLayer.SQLServer
             return data;
         }
 
-        public IList<Supplier> List()
-        {
-            List<Supplier> data = new List<Supplier>();
+        //public IList<Supplier> List()
+        //{
+        //    List<Supplier> data = new List<Supplier>();
      
-            using (SqlConnection cn = OpenConnection())
-            {
-                SqlCommand cmd = new SqlCommand();
+        //    using (SqlConnection cn = OpenConnection())
+        //    {
+        //        SqlCommand cmd = new SqlCommand();
 
-                cmd.CommandText = @"SELECT * FROM Suppliers";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = cn;
-                var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (result.Read())
-                {
-                    data.Add(new Supplier()
-                    {
-                        SupplierID = Convert.ToInt32(result["SupplierID"]),
-                        SupplierName = Convert.ToString(result["SupplierName"]),
-                        ContactName = Convert.ToString(result["ContactName"]),
-                        Address = Convert.ToString(result["Address"]),
-                        City = Convert.ToString(result["City"]),
-                        PostalCode = Convert.ToString(result["PostalCode"]),
-                        Country = Convert.ToString(result["Country"]),
-                        Phone = Convert.ToString(result["Phone"])
+        //        cmd.CommandText = @"SELECT * FROM Suppliers";
+        //        cmd.CommandType = CommandType.Text;
+        //        cmd.Connection = cn;
+        //        var result = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        while (result.Read())
+        //        {
+        //            data.Add(new Supplier()
+        //            {
+        //                SupplierID = Convert.ToInt32(result["SupplierID"]),
+        //                SupplierName = Convert.ToString(result["SupplierName"]),
+        //                ContactName = Convert.ToString(result["ContactName"]),
+        //                Address = Convert.ToString(result["Address"]),
+        //                City = Convert.ToString(result["City"]),
+        //                PostalCode = Convert.ToString(result["PostalCode"]),
+        //                Country = Convert.ToString(result["Country"]),
+        //                Phone = Convert.ToString(result["Phone"])
 
-                    });
-                }
-                cn.Close();
-            }
+        //            });
+        //        }
+        //        cn.Close();
+        //    }
 
-            return data;
-        }
+        //    return data;
+        //}
 
 
         /// <summary>

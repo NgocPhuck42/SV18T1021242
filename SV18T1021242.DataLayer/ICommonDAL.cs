@@ -21,7 +21,7 @@ namespace SV18T1021242.DataLayer
         
         bool Delete(int id);
         
-        int Count(string searchValue);
+        int Count(string searchValue="");
         bool InUsed(int id);
     }
 }

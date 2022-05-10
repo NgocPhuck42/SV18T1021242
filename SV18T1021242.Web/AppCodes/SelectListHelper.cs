@@ -24,6 +24,7 @@ namespace SV18T1021242.Web
             {
                 list.Add(new SelectListItem()
                 {
+                    
                     Value = c.CountryName,
                     Text = c.CountryName
                 });
@@ -39,7 +40,7 @@ namespace SV18T1021242.Web
             {
                 list.Add(new SelectListItem()
                 {
-                    Value = c.CategoryName,
+                    Value = Convert.ToString(c.CategoryID),
                     Text = c.CategoryName
                 });
             }
@@ -54,7 +55,7 @@ namespace SV18T1021242.Web
             {
                 list.Add(new SelectListItem()
                 {
-                    Value = c.SupplierName,
+                    Value = Convert.ToString(c.SupplierID),
                     Text = c.SupplierName
                 });
             }

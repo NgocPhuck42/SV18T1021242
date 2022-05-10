@@ -39,5 +39,7 @@ namespace SV18T1021242.Web.Models
         /// Giá trị cần tìm
         /// </summary>
         public string SearchValue { get; set; }
+        public int CategoryID { get; set; }
+        public int SupplierID { get; set; }
     }
 }

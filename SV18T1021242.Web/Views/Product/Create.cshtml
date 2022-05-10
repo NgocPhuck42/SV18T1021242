@@ -12,21 +12,58 @@
             <input type="hidden" name="CustomerID" value="@Model.ProductID" />
             <div class="form-group">
                 <label class="control-label col-sm-2">Tên mặt hàng:</label>
-                <input type="text" class="form-control" name="ProductName" autofocus value="@Model.ProductName">
-                @Html.ValidationMessageFor(e => e.ProductName, "", new { @style = "color:#ff0000" });
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="ProductName" autofocus value="@Model.ProductName">
+                    @Html.ValidationMessageFor(e => e.ProductName, "", new { @style = "color:#ff0000" });
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Loại hàng</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" name="category">
+                        @foreach (var i in SelectListHelper.Categories())
+                        {
+                            <option>@i.Text</option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(c => c.CategoryID, "", new { @style = "color:#ff0000" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">Nhà cung cấp</label>
+                <div class="col-sm-10">
+                    <select class="form-control select2" name="category">
+                        @foreach (var i in SelectListHelper.Suppliers())
+                        {
+                            if (Model.CategoryID == @i.Value)
+                            {
+                                <option>@i.Text</option>
+                            }
+
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(c => c.SupplierID, "", new { @style = "color:#ff0000" })
+                </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Đơn vị tính:</label>
-                <input type="text" class="form-control" name="Unit" value="@Model.Unit">
-                @Html.ValidationMessageFor(e => e.Unit, "", new { @style = "color:#ff0000" });
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="Unit" value="@Model.Unit">
+                    @Html.ValidationMessageFor(e => e.Unit, "", new { @style = "color:#ff0000" });
+                </div>
+
             </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">Giá hàng:</label>
-                <input type="text" class="form-control" name="Price" value="@string.Format("{0:C}",Model.Price)" />
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="Price" value="@string.Format("{0:C}",Model.Price)" />
+                    @Html.ValidationMessageFor(e => e.Price, "", new { @style = "color:#ff0000" }) ;
+                </div>
 
-                @Html.ValidationMessageFor(e => e.Price, "", new { @style = "color:#ff0000" }) ;
             </div>
 
             <div class="form-group">
