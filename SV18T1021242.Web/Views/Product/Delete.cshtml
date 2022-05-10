@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    @if (SV18T1021242.BusinessLayer.CommonDataService.InUsedProduct(Model.ProductID))
+                    @if (SV18T1021242.BusinessLayer.ProductDataService.InUsed(Model.ProductID))
                     {
                     <p class="text-warning">Không được xóa mặt hàng này</p>
                     }

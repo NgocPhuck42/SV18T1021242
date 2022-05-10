@@ -34,6 +34,6 @@ namespace SV18T1021242.DomainModel
         /// <summary>
         /// 
         /// </summary>
-        public long IsHidden { get; set; }
+        public bool IsHidden { get; set; }
     }
 }

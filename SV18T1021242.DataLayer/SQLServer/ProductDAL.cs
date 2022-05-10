@@ -81,8 +81,8 @@ namespace SV18T1021242.DataLayer.SQLServer
             using (SqlConnection cn = OpenConnection())
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = @"insert into ProductAttributes(ProductID, Photo,  Description, DisplayOrder, IsHidden)
-                                        values(@ProductID, @AttributeName, @AttributeValue , @DisplayOrder) 
+                cmd.CommandText = @"insert into ProductPhotos(ProductID,  Photo, Description, DisplayOrder, IsHidden)
+                                        values(@ProductID, @Photo , @Description, @DisplayOrder, @IsHidden) 
                                         select scope_identity()
                                     ";
                 cmd.CommandType = CommandType.Text;
@@ -271,7 +271,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                         Photo = Convert.ToString(dbReader["Photo"]),
                         Description = Convert.ToString(dbReader["Description"]),
                         DisplayOrder = Convert.ToInt32(dbReader["DisplayOrder"]),
-                        IsHidden = Convert.ToInt32(dbReader["IsHidden"]),
+                        IsHidden = Convert.ToBoolean(dbReader["IsHidden"]),
                     };
                 }
 
@@ -400,7 +400,7 @@ namespace SV18T1021242.DataLayer.SQLServer
                         Photo = Convert.ToString(result["Photo"]),
                         Description = Convert.ToString(result["Description"]),
                         DisplayOrder = Convert.ToInt32(result["DisplayOrder"]),
-                        IsHidden = Convert.ToInt32(result["IsHidden"]),
+                        IsHidden = Convert.ToBoolean(result["IsHidden"]),
 
                     });
                 }
@@ -446,8 +446,8 @@ namespace SV18T1021242.DataLayer.SQLServer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"update ProductAttributes set
-                                        ProductID = @ProductID, CategoryID = @CategoryID, SupplierID = @SupplierID , Unit = @Unit, Price = @Price, Photo=@Photo
-                                         where ProductID = @ProductID";
+                                        ProductID = @ProductID, AttributeName = @AttributeName, AttributeValue = @AttributeValue , DisplayOrder = @DisplayOrder
+                                         where AttributeID = @AttributeID";
                 cmd.CommandType = CommandType.Text;
 
                 cmd.Connection = cn;
@@ -474,7 +474,7 @@ namespace SV18T1021242.DataLayer.SQLServer
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = @"update ProductPhotos set
-                                        ProductID = @ProductID, Photo = @Photo, Description = @Description , IsHidden = @IsHidden
+                                        ProductID = @ProductID, Photo = @Photo, Description = @Description , DisplayOrder = @DisplayOrder , IsHidden = @IsHidden
                                          where PhotoID = @PhotoID";
                 cmd.CommandType = CommandType.Text;
 

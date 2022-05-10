@@ -42,6 +42,10 @@ namespace SV18T1021242.BusinessLayer
             rowCount = productDB.Count(searchValue, categoryID, supplierID);
             return productDB.List(page, pageSize, searchValue, categoryID, supplierID).ToList();
         }
+        public static Product GetProduct(int productID)
+        {
+            return productDB.Get(productID);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -78,6 +82,10 @@ namespace SV18T1021242.BusinessLayer
             if (productDB.InUsed(productID))
                 return false;
             return productDB.Delete(productID);
+        }
+        public static bool InUsed(int productID)
+        {
+            return productDB.InUsed(productID);
         }
         #endregion
 
