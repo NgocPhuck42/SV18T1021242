@@ -77,9 +77,17 @@ namespace SV18T1021242.Web.Controllers
         /// <param name="customerID"></param>
         /// <returns></returns>
         [Route("edit/{shipperID}")]
-        public ActionResult Edit(int shipperID)
+        public ActionResult Edit(string shipperID)
         {
-            Shipper model = CommonDataService.GetShipper(shipperID);
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(shipperID);
+            }
+            catch
+            {
+            }
+            Shipper model = CommonDataService.GetShipper(id);
             if (model == null)
             {
                 return RedirectToAction("Index");
@@ -123,14 +131,22 @@ namespace SV18T1021242.Web.Controllers
         /// <param name="customerID"></param>
         /// <returns></returns>
         [Route("delete/{shipperID}")]
-        public ActionResult Delete(int shipperID)
+        public ActionResult Delete(string shipperID)
         {
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(shipperID);
+            }
+            catch
+            {
+            }
             if (Request.HttpMethod == "POST")
             {
-                CommonDataService.DeleteShipper(shipperID);
+                CommonDataService.DeleteShipper(id);
                 return RedirectToAction("Index");
             }
-            var model = CommonDataService.GetShipper(shipperID);
+            var model = CommonDataService.GetShipper(id);
             if (model == null)
             {
                 return RedirectToAction("Index");

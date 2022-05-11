@@ -118,7 +118,6 @@ namespace SV18T1021242.Web.Controllers
                 ModelState.AddModelError("Email", "Email không được để trống");
             if (string.IsNullOrWhiteSpace(model.Notes))
                 ModelState.AddModelError("Notes", "Nodes không được để trống");
-
             //Chuyển dateOfBirth (dd/MM/yyyy) sang giá trị kiểu ngày
 
             try

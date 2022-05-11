@@ -76,9 +76,17 @@ namespace SV18T1021242.Web.Controllers
         /// <param name="categoryID"></param>
         /// <returns></returns>
         [Route("edit/{categoryID}")]
-        public ActionResult Edit(int categoryID)
+        public ActionResult Edit(string categoryID)
         {
-            Category model = CommonDataService.GetCategory(categoryID);
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(categoryID);
+            }
+            catch
+            {
+            }
+            Category model = CommonDataService.GetCategory(id);
             if (model == null)
             {
                 return RedirectToAction("Index");

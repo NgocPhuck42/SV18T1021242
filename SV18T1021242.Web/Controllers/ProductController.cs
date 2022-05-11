@@ -114,8 +114,8 @@ namespace SV18T1021242.Web.Controllers
             if (string.IsNullOrWhiteSpace(model.Unit))
                 ModelState.AddModelError("Unit", "Đơn vị tính không được để trống");
             if (model.Price <= 0)
-                ModelState.AddModelError("Price", "giá tiền phải lớn hơn 0");
-  
+                ModelState.AddModelError("Price", "Giá tiền phải lớn hơn 0");
+
             // Xử lí file ảnh
             if (uploadPhoto != null)
             {
@@ -137,7 +137,7 @@ namespace SV18T1021242.Web.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Photo", "Định dạng ảnh JPG, PNG, JPEG, GIF không đúng");
+                    ModelState.AddModelError("Photo", "Không đúng định dạng ảnh .JPG, .PNG, .JPEG, .GIF");
                 }
             }
 
@@ -311,6 +311,12 @@ namespace SV18T1021242.Web.Controllers
             }
             return View(model);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="titlePage"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SaveAttribute(ProductAttribute model, string titlePage)
         {

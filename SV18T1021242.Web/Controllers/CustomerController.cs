@@ -80,7 +80,15 @@ namespace SV18T1021242.Web.Controllers
         [Route("edit/{customerID}")]
         public ActionResult Edit(int customerID)
         {
-            Customer model = CommonDataService.GetCustomer(customerID);
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(customerID);
+            }
+            catch
+            {
+            }
+            Customer model = CommonDataService.GetCustomer(id);
             if (model == null)
             {
                 return RedirectToAction("Index");
@@ -132,14 +140,22 @@ namespace SV18T1021242.Web.Controllers
         /// <param name="customerID"></param>
         /// <returns></returns>
         [Route("delete/{customerID}")]
-        public ActionResult Delete(int customerID)
+        public ActionResult Delete(string customerID)
         {
+            int id = 0;
+            try
+            {
+                id = Convert.ToInt32(customerID);
+            }
+            catch
+            {
+            }
             if (Request.HttpMethod == "POST")
             {
-                CommonDataService.DeleteCustomer(customerID);
+                CommonDataService.DeleteCustomer(id);
                 return RedirectToAction("Index");
             }
-            var model = CommonDataService.GetCustomer(customerID);
+            var model = CommonDataService.GetCustomer(id);
             if (model == null)
             {
                 return RedirectToAction("Index");
